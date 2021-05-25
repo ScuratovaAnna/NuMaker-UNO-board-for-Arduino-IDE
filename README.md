@@ -5,7 +5,9 @@
 
 ![alt-текст](https://github.com/ScuratovaAnna/NuMaker-UNO-board-for-Arduino-IDE/blob/master/foto/001.jpg "NuMaker UNO")  
 
-В качестве основного целевого устройства используется микроконтроллер [NUC131SD2AE.](https://www.nuvoton.com/products/microcontrollers/arm-cortex-m0-mcus/nuc131-nuc1311-can-series/nuc131sd2ae/)   
+В качестве основного целевого устройства используется микроконтроллер [NUC131SD2AE.](https://www.nuvoton.com/products/microcontrollers/arm-cortex-m0-mcus/nuc131-nuc1311-can-series/nuc131sd2ae/)    
+
+![alt-текст](https://github.com/ScuratovaAnna/NuMaker-UNO-board-for-Arduino-IDE/blob/master/foto/002.jpg "NuMaker UNO")   
 
 
 
