@@ -11,7 +11,7 @@ void setup() {
   // initialize digital pin LED_BUILTIN as an output.
   //pinMode(LED_BUILTIN, OUTPUT);
   GPIO_SetMode(PB, BIT13, GPIO_PMD_OUTPUT);
-  Serial.begin(9600);//инициализируем и задает скорость передачи данных UART0_TXD, UART0_TXD
+  Serial.begin(9600);//инициализируем и задает скорость передачи данных UART0_RXD, UART0_TXD
   //Задает скорость передачи данных для последовательного порта, созданного библиотекой
   mySerial.begin(115200);
   mySerial.println("Hello, world?");
