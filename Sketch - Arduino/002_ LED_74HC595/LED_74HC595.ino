@@ -1,11 +1,16 @@
+/*  29.05.2021
+ *  http://publicatorbar.ru/2017/12/21/arduino-multi-function-shield/
+ *  подсмотренно здесь
+ *  https://www.youtube.com/watch?v=BonEEaQX8vg
+ */
 #include <SPI.h>
 // set pin 10 as the slave select for the digital pot:
 const int slaveSelectPin = 10;
-/*                      байты чисел от 0 до 9... 10->пустота, 11->минус              */
-/*                           0    1   2    3    4    5    6    7   8    9    10   11 */
+/* -------------------- байты чисел от 0 до 9... 10->пустота, 11->минус --------------------------- */
+/*                           0    1   2    3    4    5    6    7   8    9    10   11                */
 /*const byte SEGMENT_MAP[] = {0x3F, 0x6, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x7, 0X7F, 0X6F, 0X00, 0X40};*/
-/* Байт-карты для выбора разряда дисплея от 1 до 4                                   */
-/*                              0     1   2    3                                     */
+/* Байт-карты для выбора разряда дисплея от 1 до 4                                                  */
+/* ---------------------------- 0     1   2    3 -------------------------------------------------- */
 const byte SEGMENT_SELECT[] = {0xF7, 0xFB, 0xFD, 0xFE};
 uint8_t symbol[4];
 int i = 0;
@@ -14,7 +19,6 @@ boolean variable = false;
 
 void setup () {
   pinMode (slaveSelectPin, OUTPUT);
-  // initialize SPI:
   SPI.begin();
   //-------------------------------//TIM_1
   int clock = 12000000; /* 12Mhz */
@@ -338,7 +342,6 @@ void timer_ISR_1(uint8_t num)
   if (i == 999) {
     Timer1.detachInterrupt();
     Timer2.attachInterrupt(timer_ISR_2);
-
   }
 }
 //--------обработчик_прерывания_TIM_2-------------//
