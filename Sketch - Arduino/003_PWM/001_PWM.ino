@@ -10,7 +10,7 @@
 void setup() {
   GPIO_SetMode(PB, BIT13, GPIO_PMD_OUTPUT);
   uint32_t period  = 12000000;
-  Timer1.open(CONTINUOUS, period );
+  Timer1.open(PERIODIC, period );
   Timer1.attachInterrupt(timer_ISR);
   Timer1.start();
 }
