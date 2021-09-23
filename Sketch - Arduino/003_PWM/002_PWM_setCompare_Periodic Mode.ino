@@ -5,6 +5,7 @@
 #define LED PB13
 uint8_t count=0;
 uint32_t TDR;
+uint32_t get_clock;
 void setup() {
   GPIO_SetMode(PB, BIT13, GPIO_PMD_OUTPUT);
   uint32_t clock = 12000000; /* 12Mhz */
@@ -19,9 +20,12 @@ void loop() {}
 /*---------обработчик прерывания----------*/
 void timer_ISR(uint8_t num)
 {
+  get_clock=TIMER_GetModuleClock(TIMER0);
+  Serial.println(get_clock);  
   LED ^= 1;
   count++;
   TDR = (count <= 10) ? 93750 : 23000;
   Timer1.setCompare(TDR); 
   if(count>=20)count=0;
+  get_clock=0;
 }
