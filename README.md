@@ -9,7 +9,7 @@ Cовместимая с Arduino отладочная плата [NuMaker UNO De
 
 ![alt-текст](https://github.com/ScuratovaAnna/NuMaker-UNO-board-for-Arduino-IDE/blob/master/foto/004.jpg "NuMaker UNO NUC131SD2AE Extended Connectors Layout")  
 
-[NuMaker UNO board package for Arduino IDE](https://github.com/OpenNuvoton/NuMaker_UNO)  
+Этот репозиторий содержит дескриптор пакета для плат NuMaker UNO. [NuMaker UNO board package for Arduino IDE](https://github.com/OpenNuvoton/NuMaker_UNO)   
 
 ![alt-текст](https://github.com/ScuratovaAnna/NuMaker-UNO-board-for-Arduino-IDE/blob/master/foto/005.jpg "NuMaker UNO Pin Design for Arduino")   
 
