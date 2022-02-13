@@ -1,4 +1,11 @@
-//https://www.chipdip.ru/product/wh1202a-ygh-ct
+/**---------------------------------------------
+*\date  13.02.2022
+*\brief 
+* дисплей куплен:  https://www.chipdip.ru/product/wh1202a-ygh-ct
+* вывод RW дисплея по умолчанию притянут к логическому нулю
+* 
+*\authors ScuratovaAnna + PivnevNikolay
+*/
 #define e1 PE5 = 1
 #define e0 PE5 = 0
 #define rs1 PB11 = 1
@@ -12,14 +19,14 @@ void lcd_print( const char* s );
 
 void setup()
  {
- GPIO_SetMode(PA, (BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7 ), GPIO_PMD_OUTPUT);///инициализация шины PA0-PA7 LCD
+ GPIO_SetMode(PA, (BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7 ), GPIO_PMD_OUTPUT);/// \brief инициализация шины PA0-PA7 LCD
  pinMode(PE5, GPIO_PMD_OUTPUT);//PE5-->e
  pinMode(PB11, GPIO_PMD_OUTPUT);//PB11-->rs
  lcd_init_8bit(); // Инициализация дисплея
- lcd_SetPos(1,0);
- lcd_print("Hello,");
- lcd_SetPos(1,1);
- lcd_print("world!!!");
+ lcd_SetPos(0,0);
+ lcd_print("Hello NUC131");
+ lcd_SetPos(2,1);
+ lcd_print("world!");
  }
 void loop()
  {
@@ -29,7 +36,7 @@ void loop()
 // Функция записи команды в LCD
 void lcd_com(unsigned char p)
  {
-  rs0; // RS = 0
+  rs0; /// \brief RS = 0 будет передана команда
   e1; // EN = 1 (начало записи команды в LCD)
   PA->DOUT = p; // Вывод команды на шину PA0-PA7 LCD
   delay(1); // Длительность сигнала EN
@@ -40,7 +47,7 @@ void lcd_com(unsigned char p)
 // Функция вывода одного символа (char)
 void lcd_write_Char(unsigned char p)
  {
-  rs1;// RS = 1
+  rs1;// \brief RS = 1 будут переданы пользовательские данные 
   e1; // EN = 1 (начало записи команды в LCD)
   PA->DOUT = p; // Вывод команды на шину PA0-PA7 LCD
   delay(1); // Длительность сигнала EN
@@ -52,18 +59,15 @@ void lcd_write_Char(unsigned char p)
 void lcd_init_8bit(void)
  {
   rs0;
-  e0;//
+  e0;
   PA->DOUT = 0x00; // Лог. нули на выходе
   lcd_com(0x08); // Полное выключение дисплея
   lcd_com(0x38); // 8 бит 2 строки
-  delay(10);
-  lcd_com(0x38); // 8 бит 2 строки
-  delay(10);
-  lcd_com(0x38); // 8 бит 2 строки
+  delay(2);
   lcd_com(0x01); // Очистка дисплея
-  delay(10);
+  delay(2);
   lcd_com(0x06); // Сдвиг курсора вправо
-  delay(10);
+  delay(2);
   lcd_com(0x0C); // Курсор невидим
  }
 //------------------------------------------------------------------------------
@@ -101,4 +105,3 @@ void lcd_print( const char* s )
   lcd_write_Char( s[i] );
   }
  }
-//------------------------------------------------------------------------------
