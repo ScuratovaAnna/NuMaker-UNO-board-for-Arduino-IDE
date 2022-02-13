@@ -16,6 +16,7 @@ void lcd_dat(unsigned char p);
 void lcd_init_8bit(void);
 void lcd_SetPos(uint8_t x, uint8_t y);
 void lcd_print( const char* s );
+void lcd_string(char *p,uint8_t x,uint8_t y);
 
 void setup()
  {
@@ -25,8 +26,9 @@ void setup()
  lcd_init_8bit(); // Инициализация дисплея
  lcd_SetPos(0,0);
  lcd_print("Hello NUC131");
- lcd_SetPos(2,1);
- lcd_print("world!");
+ //lcd_SetPos(2,1);
+ //lcd_print("world!");
+ lcd_string("HI BABY",0,1) ;
  }
 void loop()
  {
@@ -95,7 +97,7 @@ void lcd_SetPos(uint8_t x, uint8_t y)
   }
  }
 //------------------------------------------------------------------------------
-//Вывод строки символов
+//Выводим строку на экран LCD
 void lcd_print( const char* s )
  {    
   unsigned int len = strlen( s );
@@ -105,3 +107,15 @@ void lcd_print( const char* s )
   lcd_write_Char( s[i] );
   }
  }
+//------------------------------------------------------------------------------
+//Выводим строку на экран LCD с заданными координатами
+void lcd_string(char *p,uint8_t x,uint8_t y) //Вывести строку на дисплей X,Y
+///lcd_string("HI BABY",4,1) ; выведется сторка по конкретным координатам
+{
+ lcd_SetPos(x, y);
+  while( *p )
+  {
+    lcd_write_Char(*p++ );
+  }
+}
+//------------------------------------------------------------------------------
