@@ -8,8 +8,6 @@ SoftwareSerial mySerial(10, 11); // назначим выводы UART5_TXD, UAR
 
 
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  //pinMode(LED_BUILTIN, OUTPUT);
   GPIO_SetMode(PB, BIT13, GPIO_PMD_OUTPUT);
   Serial.begin(9600);//инициализируем и задает скорость передачи данных UART0_RXD, UART0_TXD
   //Задает скорость передачи данных для последовательного порта, созданного библиотекой
@@ -20,12 +18,10 @@ void setup() {
 
 
 void loop() {
-  //digitalWrite(LED_BUILTIN, HIGH); // turn the LED on (HIGH is the voltage level)
   PB13=1;
   mySerial.println("Led ON");
   Serial.println("1");
   delay(1000);                       // wait for a second
-  //digitalWrite(LED_BUILTIN, LOW);  // turn the LED off by making the voltage LOW
   PB13=0;
   mySerial.println("Led Off");
   Serial.println("0");
