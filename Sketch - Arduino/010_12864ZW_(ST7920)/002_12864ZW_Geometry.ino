@@ -10,9 +10,9 @@
 #include <SPI.h>
 const int Slave_Select_Pin = 10;
 const int RST_Pin = 11;
-byte Frame_buffer[1024] = { 0, };
+byte Frame_buffer[1024] = { 0, }; 
 uint8_t ZW12864_width = 128; 
-uint8_t ZW12864_height = 64;
+uint8_t ZW12864_height = 64; 
 int16_t f;
 byte i = 0;
 byte h;
@@ -29,6 +29,13 @@ void setup() {
   ZW12864_Clean();
 }
 void loop() {
+  ZW12864_Draw_rectangle(0, 0, 40, 20);
+  ZW12864_Draw_rectangle_filled(10, 10, 40, 20);
+  ZW12864_Draw_circle(80, 15, 15);
+  ZW12864_Draw_circle_filled(100, 20, 12);
+  ZW12864_Draw_bitmap(Frame_buffer);
+  delay(3000);
+  ZW12864_Clean_Frame_buffer();
   w2 = ZW12864_width;
   h2 = ZW12864_height;
   w2 /= 2;
@@ -44,13 +51,14 @@ void loop() {
     }
   }
   ZW12864_Draw_bitmap(Frame_buffer);
-  delay(2000);
+  delay(2500);
   for (h = 0; h < ZW12864_width; h++) {
-    ZW1286_Draw_line(0 + i, 10, 127 - i, 50);
-    ZW1286_Draw_line(0 + i, 10, 0 + i, 50);
-    ZW1286_Draw_line(127 - i, 10, 0 + i, 50);
-    ZW1286_Draw_line(127 - i, 10, 127 - i, 50);
+    ZW12864_Draw_line(0 + i, 10, 127 - i, 50);
+    ZW12864_Draw_line(0 + i, 10, 0 + i, 50);
+    ZW12864_Draw_line(127 - i, 10, 0 + i, 50);
+    ZW12864_Draw_line(127 - i, 10, 127 - i, 50);
     i++;
+    ZW12864_Inversion(0, 1024);
     ZW12864_Draw_bitmap(Frame_buffer);
     ZW12864_Clean_Frame_buffer();
     if (i == 127)i = 0;
@@ -230,7 +238,7 @@ void ZW12864_Toggle_pixel(uint8_t x, uint8_t y)
 }
 
 /*---------------------Функция рисования линии на экране----------------------------------------*/
-void ZW1286_Draw_line(uint8_t x_start, uint8_t y_start, uint8_t x_end, uint8_t y_end) {
+void ZW12864_Draw_line(uint8_t x_start, uint8_t y_start, uint8_t x_end, uint8_t y_end) {
   int dx = (x_end >= x_start) ? x_end - x_start : x_start - x_end;
   int dy = (y_end >= y_start) ? y_end - y_start : y_start - y_end;
   int sx = (x_start < x_end) ? 1 : -1;
@@ -272,3 +280,133 @@ void ZW12864_Clean() {
   ZW12864_Clean_Frame_buffer();
 }
 /*---------------------Функция очистки дисплея в графическом режиме-----------------------------*/
+/*---------------------Функция инверсии любого места в буфере-----------------------------------*/
+void ZW12864_Inversion(uint16_t x_start, uint16_t x_end) {
+  /// Функция инверсии любого места в буфере
+  /// \param x_start - начальная точка по х от 0 до 1024
+  /// \param x_end - конечная точка по y от 0 до 1024
+  for (; x_start < x_end; x_start++) {
+    Frame_buffer[x_start] = ~(Frame_buffer[x_start]);
+  }
+}
+/*---------------------Функция инверсии любого места в буфере-----------------------------------*/
+/*--------------------------------Вывести пустотелый прямоугольник------------------------------*/
+void ZW12864_Draw_rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height) {
+  /// Вывести пустотелый прямоугольник
+  /// \param x - начальная точка по оси "x"
+  /// \param y - начальная точка по оси "y"
+  /// \param width - ширина прямоугольника
+  /// \param height - высота прямоугольника
+
+  /*Проверка ширины и высоты*/
+  if ((x + width) >= ZW12864_width) {
+    width = ZW12864_width - x;
+  }
+  if ((y + height) >= ZW12864_height) {
+    height = ZW12864_height - y;
+  }
+
+  /*Рисуем линии*/
+  ZW12864_Draw_line(x, y, x + width, y); /*Верх прямоугольника*/
+  ZW12864_Draw_line(x, y + height, x + width, y + height); /*Низ прямоугольника*/
+  ZW12864_Draw_line(x, y, x, y + height); /*Левая сторона прямоугольника*/
+  ZW12864_Draw_line(x + width, y, x + width, y + height); /*Правая сторона прямоугольника*/
+}
+/*--------------------------------Вывести пустотелый прямоугольник------------------------------*/
+/*-------------------------------Вывести закрашенный прямоугольник------------------------------*/
+void ZW12864_Draw_rectangle_filled(uint16_t x, uint16_t y, uint16_t width, uint16_t height) {
+  /// Вывести закрашенный прямоугольник
+  /// \param x - начальная точка по оси "x"
+  /// \param y - начальная точка по оси "y"
+  /// \param width - ширина прямоугольника
+  /// \param height - высота прямоугольника
+
+  /*Проверка ширины и высоты*/
+  if ((x + width) >= ZW12864_width) {
+    width = ZW12864_width - x;
+  }
+  if ((y + height) >= ZW12864_height) {
+    height = ZW12864_height - y;
+  }
+
+  /*Рисуем линии*/
+  for (uint8_t i = 0; i <= height; i++) {
+    ZW12864_Draw_line(x, y + i, x + width, y + i);
+  }
+}
+/*-------------------------------Вывести закрашенный прямоугольник---------------------------------*/
+/*---------------------------------Вывести пустотелую окружность-----------------------------------*/
+void ZW12864_Draw_circle(uint8_t x, uint8_t y, uint8_t radius) {
+  /// Вывести пустотелую окружность
+  /// \param x - точка центра окружности по оси "x"
+  /// \param y - точка центра окружности по оси "y"
+  /// \param radius - радиус окружности
+
+  int f = 1 - (int) radius;
+  int ddF_x = 1;
+
+  int ddF_y = -2 * (int) radius;
+  int x_0 = 0;
+
+  ZW12864_Draw_pixel(x, y + radius);
+  ZW12864_Draw_pixel(x, y - radius);
+  ZW12864_Draw_pixel(x + radius, y);
+  ZW12864_Draw_pixel(x - radius, y);
+
+  int y_0 = radius;
+  while (x_0 < y_0) {
+    if (f >= 0) {
+      y_0--;
+      ddF_y += 2;
+      f += ddF_y;
+    }
+    x_0++;
+    ddF_x += 2;
+    f += ddF_x;
+    ZW12864_Draw_pixel(x + x_0, y + y_0);
+    ZW12864_Draw_pixel(x - x_0, y + y_0);
+    ZW12864_Draw_pixel(x + x_0, y - y_0);
+    ZW12864_Draw_pixel(x - x_0, y - y_0);
+    ZW12864_Draw_pixel(x + y_0, y + x_0);
+    ZW12864_Draw_pixel(x - y_0, y + x_0);
+    ZW12864_Draw_pixel(x + y_0, y - x_0);
+    ZW12864_Draw_pixel(x - y_0, y - x_0);
+  }
+}
+/*---------------------------------Вывести пустотелую окружность-----------------------------------*/
+/*--------------------------------Вывести закрашенную окружность-----------------------------------*/
+void ZW12864_Draw_circle_filled(int16_t x, int16_t y, int16_t radius) {
+  /// Вывести закрашенную окружность
+  /// \param x - точка центра окружности по оси "x"
+  /// \param y - точка центра окружности по оси "y"
+  /// \param radius - радиус окружности
+
+  int16_t f = 1 - radius;
+  int16_t ddF_x = 1;
+  int16_t ddF_y = -2 * radius;
+  int16_t x_0 = 0;
+  int16_t y_0 = radius;
+
+  ZW12864_Draw_pixel(x, y + radius);
+  ZW12864_Draw_pixel(x, y - radius);
+  ZW12864_Draw_pixel(x + radius, y);
+  ZW12864_Draw_pixel(x - radius, y);
+  ZW12864_Draw_line(x - radius, y, x + radius, y);
+
+  while (x_0 < y_0) {
+    if (f >= 0) {
+      y_0--;
+      ddF_y += 2;
+      f += ddF_y;
+    }
+    x_0++;
+    ddF_x += 2;
+    f += ddF_x;
+
+    ZW12864_Draw_line(x - x_0, y + y_0, x + x_0, y + y_0);
+    ZW12864_Draw_line(x + x_0, y - y_0, x - x_0, y - y_0);
+    ZW12864_Draw_line(x + y_0, y + x_0, x - y_0, y + x_0);
+    ZW12864_Draw_line(x + y_0, y - x_0, x - y_0, y - x_0);
+  }
+}
+/*--------------------------------Вывести закрашенную окружность-----------------------------------*/

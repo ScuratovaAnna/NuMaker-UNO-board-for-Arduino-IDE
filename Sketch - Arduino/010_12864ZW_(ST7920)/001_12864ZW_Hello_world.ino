@@ -1,4 +1,13 @@
-#include <SPI.h>//Подключаем библиотеку
+/**-----------------------------------------------------------------------------------------------
+*\date  20.03.2022
+*\brief 
+*\authors ScuratovaAnna + PivnevNikolay
+* подсмотренно
+* https://www.youtube.com/watch?v=RuUFxePFrmo
+* https://vk.com/solderingiron.stm32
+* Ссылка на Telegram канал: https://t.me/nuvoton_programming
+*/
+#include <SPI.h>
   const int Slave_Select_Pin = 10;
   const int RST_Pin = 11;
 void setup() {
