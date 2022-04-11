@@ -1,11 +1,23 @@
-#include <SPI.h>//Подключаем библиотеку
+/**-----------------------------------------------------------------------------------------------
+*\date  01.04.2022
+*\brief 
+*\authors ScuratovaAnna + PivnevNikolay
+* подсмотренно
+* https://www.youtube.com/watch?v=RuUFxePFrmo
+* https://vk.com/solderingiron.stm32
+* Ссылка на Telegram канал: https://t.me/nuvoton_programming
+*/
+#include <SPI.h>
 const int Slave_Select_Pin = 10;
 const int RST_Pin = 11;
-byte Frame_buffer[1024] = { 0, }; //Буфер кадра
-uint8_t ZW12864_width = 128; //Ширина дисплея в пикселях
-uint8_t ZW12864_height = 64; //Высота дисплея в пикселях
+byte Frame_buffer[1024] = { 0, };
+uint8_t ZW12864_width = 128; 
+uint8_t ZW12864_height = 64;
 int16_t f;
 byte i = 0;
+byte h;
+byte x, y, w2, h2;
+
 void setup() {
   pinMode (Slave_Select_Pin, OUTPUT);
   pinMode (RST_Pin, OUTPUT);
@@ -17,14 +29,32 @@ void setup() {
   ZW12864_Clean();
 }
 void loop() {
-  ZW1286_Draw_line(0 + i, 10, 127 - i, 50);
-  ZW1286_Draw_line(0 + i, 10, 0 + i, 50);
-  ZW1286_Draw_line(127 - i, 10, 0 + i, 50);
-  ZW1286_Draw_line(127 - i, 10, 127 - i, 50);
-  i++;
+  w2 = ZW12864_width;
+  h2 = ZW12864_height;
+  w2 /= 2;
+  h2 /= 2;
+  for ( y = 0; y < h2; y++ ) {
+    for ( x = 0; x < w2; x++ ) {
+      if ( (x + y) & 1 ) {
+        ZW12864_Draw_pixel(x, y);
+        ZW12864_Draw_pixel(x, y + h2);
+        ZW12864_Draw_pixel(x + w2, y);
+        ZW12864_Draw_pixel(x + w2, y + h2);
+      }
+    }
+  }
   ZW12864_Draw_bitmap(Frame_buffer);
-  ZW12864_Clean_Frame_buffer();
-  if (i == 127)i = 0;
+  delay(2000);
+  for (h = 0; h < ZW12864_width; h++) {
+    ZW1286_Draw_line(0 + i, 10, 127 - i, 50);
+    ZW1286_Draw_line(0 + i, 10, 0 + i, 50);
+    ZW1286_Draw_line(127 - i, 10, 0 + i, 50);
+    ZW1286_Draw_line(127 - i, 10, 127 - i, 50);
+    i++;
+    ZW12864_Draw_bitmap(Frame_buffer);
+    ZW12864_Clean_Frame_buffer();
+    if (i == 127)i = 0;
+  }
 }
 /*----------------------The function of sending a command to the display------------------------*/
 void ZW12864_Send_command(uint8_t  Data) {
@@ -176,6 +206,29 @@ void ZW12864_Draw_pixel(uint8_t x, uint8_t y) {
   }
 }
 /*---------------------Функция рисования пикселя на экране--------------------------------------*/
+/*--------------------- Clear Pixel-------------------------------------------------------------*/
+
+void ZW12864_Clean_pixel(uint8_t x, uint8_t y) {
+  /// Функция удаления точки.
+  /// param\ x - координата по X(от 0 до 127)
+  /// paran\ y - координата по Y(от 0 до 63)
+  if (y < ZW12864_height && x < ZW12864_width) {
+    Frame_buffer[(x) + ((y / 8) * 128)] &= 0xFE << y % 8;
+  }
+}
+/*--------------------- Clear Pixel-------------------------------------------------------------*/
+
+void ZW12864_Toggle_pixel(uint8_t x, uint8_t y)
+{
+  if (y < ZW12864_height && x < ZW12864_width)
+  {
+    if ((Frame_buffer[(x) + ((y / 8) * 128)] >> y % 8) & 0x01)
+      ZW12864_Clean_pixel(x, y);
+    else
+      ZW12864_Draw_pixel(x, y);
+  }
+}
+
 /*---------------------Функция рисования линии на экране----------------------------------------*/
 void ZW1286_Draw_line(uint8_t x_start, uint8_t y_start, uint8_t x_end, uint8_t y_end) {
   int dx = (x_end >= x_start) ? x_end - x_start : x_start - x_end;
