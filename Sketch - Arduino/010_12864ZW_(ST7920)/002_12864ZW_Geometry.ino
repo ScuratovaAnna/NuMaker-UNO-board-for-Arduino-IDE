@@ -7,12 +7,23 @@
 * https://vk.com/solderingiron.stm32
 * Ссылка на Telegram канал: https://t.me/nuvoton_programming
 */
-#include <SPI.h>
+#include <SPI.h>//Подключаем библиотеку
+const byte Rook_bitmap[] PROGMEM = {
+  0x55,         // 01010101
+  0x55,         // 01010101
+  0x7f,         // 01111111
+  0x3e,         // 00111110
+  0x3e,         // 00111110
+  0x3e,         // 00111110
+  0x3e,         // 00111110
+  0x7f          // 01111111
+};
+const byte Smile_bitmap[] PROGMEM = {0x0, 0xA, 0x0, 0x0, 0x11, 0xE, 0x0, 0x0};
 const int Slave_Select_Pin = 10;
 const int RST_Pin = 11;
-byte Frame_buffer[1024] = { 0, }; 
-uint8_t ZW12864_width = 128; 
-uint8_t ZW12864_height = 64; 
+byte Frame_buffer[1024] = { 0, }; //Буфер кадра
+uint8_t ZW12864_width = 128; //Ширина дисплея в пикселях
+uint8_t ZW12864_height = 64; //Высота дисплея в пикселях
 int16_t f;
 byte i = 0;
 byte h;
@@ -33,8 +44,12 @@ void loop() {
   ZW12864_Draw_rectangle_filled(10, 10, 40, 20);
   ZW12864_Draw_circle(80, 15, 15);
   ZW12864_Draw_circle_filled(100, 20, 12);
+  ZW12864_Draw_triangle(20, 40, 30, 62, 0, 62);
+  ZW12864_Draw_triangle_filled(40, 40, 50, 63, 10, 63);
+  ZW12864_ICON_Print(11, 6, Rook_bitmap);
+  ZW12864_ICON_Print(13, 6, Smile_bitmap);
   ZW12864_Draw_bitmap(Frame_buffer);
-  delay(3000);
+  delay(3500);
   ZW12864_Clean_Frame_buffer();
   w2 = ZW12864_width;
   h2 = ZW12864_height;
@@ -410,3 +425,101 @@ void ZW12864_Draw_circle_filled(int16_t x, int16_t y, int16_t radius) {
   }
 }
 /*--------------------------------Вывести закрашенную окружность-----------------------------------*/
+/*-----------------------------------Вывести пустотелый треугольник--------------------------------*/
+void ZW12864_Draw_triangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3) {
+  /// Вывести пустотелый треугольник
+  /// \param x_1 - первая точка треугольника. Координата по оси "x"
+  /// \param y_1 - первая точка треугольника. Координата по оси "y"
+  /// \param x_2 - вторая точка треугольника. Координата по оси "x"
+  /// \param y_2 - вторая точка треугольника. Координата по оси "y"
+  /// \param x_3 - третья точка треугольника. Координата по оси "x"
+  /// \param y_3 - третья точка треугольника. Координата по оси "y"
+
+  ZW12864_Draw_line(x1, y1, x2, y2);
+  ZW12864_Draw_line(x2, y2, x3, y3);
+  ZW12864_Draw_line(x3, y3, x1, y1);
+}
+/*-----------------------------------Вывести пустотелый треугольник--------------------------------*/
+void ZW12864_Draw_triangle_filled(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3) {
+  /// Вывести закрашенный треугольник
+  /// \param x_1 - первая точка треугольника. Координата по оси "x"
+  /// \param y_1 - первая точка треугольника. Координата по оси "y"
+  /// \param x_2 - вторая точка треугольника. Координата по оси "x"
+  /// \param y_2 - вторая точка треугольника. Координата по оси "y"
+  /// \param x_3 - третья точка треугольника. Координата по оси "x"
+  /// \param y_3 - третья точка треугольника. Координата по оси "y"
+
+#define ABS(x)   ((x) > 0 ? (x) : -(x))
+  int16_t deltax = 0;
+  int16_t deltay = 0;
+  int16_t x = 0;
+  int16_t y = 0;
+  int16_t xinc1 = 0;
+  int16_t xinc2 = 0;
+  int16_t yinc1 = 0;
+  int16_t yinc2 = 0;
+  int16_t den = 0;
+  int16_t num = 0;
+  int16_t numadd = 0;
+  int16_t numpixels = 0;
+  int16_t curpixel = 0;
+
+  deltax = ABS(x2 - x1);
+  deltay = ABS(y2 - y1);
+  x = x1;
+  y = y1;
+
+  if (x2 >= x1) {
+    xinc1 = 1;
+    xinc2 = 1;
+  } else {
+    xinc1 = -1;
+    xinc2 = -1;
+  }
+
+  if (y2 >= y1) {
+    yinc1 = 1;
+    yinc2 = 1;
+  } else {
+    yinc1 = -1;
+    yinc2 = -1;
+  }
+
+  if (deltax >= deltay) {
+    xinc1 = 0;
+    yinc2 = 0;
+    den = deltax;
+    num = deltax / 2;
+    numadd = deltay;
+    numpixels = deltax;
+  } else {
+    xinc2 = 0;
+    yinc1 = 0;
+    den = deltay;
+    num = deltay / 2;
+    numadd = deltax;
+    numpixels = deltay;
+  }
+
+  for (curpixel = 0; curpixel <= numpixels; curpixel++) {
+    ZW12864_Draw_line(x, y, x3, y3);
+
+    num += numadd;
+    if (num >= den) {
+      num -= den;
+      x += xinc1;
+      y += yinc1;
+    }
+    x += xinc2;
+    y += yinc2;
+  }
+}
+/*----------------------------------Вывести закрашенный треугольник--------------------------------*/
+/*----------------------------------Print ICON(8*8) x=0-15 y=0-7-----------------------------------*/
+void ZW12864_ICON_Print(uint8_t x, uint8_t y, const uint8_t * ICON)
+{
+  int i;
+  for (i = 0; i < 8; i++)
+    Frame_buffer[i + (x * 8) + (y * 128)] = ICON[i];
+}
+/*----------------------------------Print ICON(8*8) x=0-15 y=0-7-----------------------------------*/
