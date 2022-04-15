@@ -43,27 +43,27 @@ if(positive_value){
   return buffer;
     break;
     case 1:
-  sprintf(buffer, "%d.%1d", (int)f, (int)(f * 10) % 10);
+  sprintf(buffer, "%d.%.1d", (int)f, (int)(f * 10) % 10);
   return buffer;  
     break;
     case 2:
-  sprintf(buffer, "%d.%2d", (int)f, (int)(f * 100) % 100);
+  sprintf(buffer, "%d.%.2d", (int)f, (int)(f * 100) % 100);
   return buffer;
     break;
     case 3:
-  sprintf(buffer, "%d.%3d", (int)f, (int)(f * 1000) % 1000);
+  sprintf(buffer, "%d.%.3d", (int)f, (int)(f * 1000) % 1000);
   return buffer;
     break;
     case 4:
-  sprintf(buffer, "%d.%4d", (int)f, (int)(f * 10000) % 10000);
+  sprintf(buffer, "%d.%.4d", (int)f, (int)(f * 10000) % 10000);
   return buffer;
     break;
     case 5:
-  sprintf(buffer, "%d.%5d", (int)f, (int)(f * 100000) % 100000);
+  sprintf(buffer, "%d.%.5d", (int)f, (int)(f * 100000) % 100000);
   return buffer;
     break;
     case 6:
-  sprintf(buffer, "%d.%6d", (int)f, (int)(f * 1000000) % 1000000);
+  sprintf(buffer, "%d.%.6d", (int)f, (int)(f * 1000000) % 1000000);
   return buffer;
     break;
   }
@@ -75,27 +75,27 @@ else{
   return buffer;
     break;
     case 1:
-  sprintf(buffer, "-%d.%1d", (int)f, (int)(f * 10) % 10);
+  sprintf(buffer, "-%d.%.1d", (int)f, (int)(f * 10) % 10);
   return buffer;  
     break;
     case 2:
-  sprintf(buffer, "-%d.%2d", (int)f, (int)(f * 100) % 100);
+  sprintf(buffer, "-%d.%.2d", (int)f, (int)(f * 100) % 100);
   return buffer;
     break;
     case 3:
-  sprintf(buffer, "-%d.%3d", (int)f, (int)(f * 1000) % 1000);
+  sprintf(buffer, "-%d.%.3d", (int)f, (int)(f * 1000) % 1000);
   return buffer;
     break;
     case 4:
-  sprintf(buffer, "-%d.%4d", (int)f, (int)(f * 10000) % 10000);
+  sprintf(buffer, "-%d.%.4d", (int)f, (int)(f * 10000) % 10000);
   return buffer;
     break;
     case 5:
-  sprintf(buffer, "-%d.%5d", (int)f, (int)(f * 100000) % 100000);
+  sprintf(buffer, "-%d.%.5d", (int)f, (int)(f * 100000) % 100000);
   return buffer;
     break;
     case 6:
-  sprintf(buffer, "-%d.%6d", (int)f, (int)(f * 1000000) % 1000000);
+  sprintf(buffer, "-%d.%.6d", (int)f, (int)(f * 1000000) % 1000000);
   return buffer;
     break;
    }
