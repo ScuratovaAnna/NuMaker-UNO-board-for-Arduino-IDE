@@ -31,7 +31,12 @@ void setup() {
 void loop() {
   if (counter_1 == 140) {
     counter_1 = 0;
-    ZW12864_Send_command(0x01);
+    ZW12864_Send_command(0x81);
+    ZW12864_Send_data(0x20);
+    ZW12864_Send_data(0x20);
+    ZW12864_Send_command(0x82);
+    ZW12864_Send_data(0x20);
+    ZW12864_Send_data(0x20);
   }
   if (counter_2 == -115) {
     counter_2 = 0;
