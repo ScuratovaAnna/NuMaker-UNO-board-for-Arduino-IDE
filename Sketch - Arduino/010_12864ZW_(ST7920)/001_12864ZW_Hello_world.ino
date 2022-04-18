@@ -1,14 +1,14 @@
-//https://www.onetransistor.eu/2018/03/code-text-mode-st7920-arduino.html
-//http://termin.narod.ru/a/asciicode.htm
 #include <SPI.h>
 const int Slave_Select_Pin = 10;
 const int RST_Pin = 11;
 char Int_1_buffer[10] = {0,};
 char Int_2_buffer[10] = {0,};
 char Float_buffer[10] = {0,};
+char Float_buffer_minus[10] = {0,};
 byte counter_1 = 135;
 float f_counter = 12.0001;
 int counter_2 = -100;
+float f_counter_minus = -12.0001;
 void setup() {
   //pinMode (Slave_Select_Pin, OUTPUT);
   GPIO_SetMode(PA, BIT13, GPIO_PMD_OUTPUT);
@@ -50,12 +50,15 @@ void loop() {
   itoa(counter_1, Int_1_buffer, DEC);
   itoa(counter_2, Int_2_buffer, DEC);
   FloatToChar (f_counter, 4);
+  FloatToChar (f_counter_minus, 4);
   ZW12864_Send_symbol_text(0, 1, Int_1_buffer);
   ZW12864_Send_symbol_text(1, 1, Float_buffer);
   ZW12864_Send_symbol_text(2, 1, Int_2_buffer);
-  counter_1++;
-  counter_2--;
+  ZW12864_Send_symbol_text(3, 1, Float_buffer_minus);
+  counter_1 ++;
+  counter_2 --;
   f_counter = f_counter + 0.0001;
+  f_counter_minus = f_counter_minus - 0.0001;
   delay(500);
 }
 /*----------------------The function of sending a command to the display------------------------*/
@@ -202,31 +205,31 @@ const char* FloatToChar (float f, signed char width) {
   else {
     switch (width) {
       case 0:
-        sprintf(Float_buffer, "-%d.%d", (int)f, (int)(f * 0) % 0);
+        sprintf(Float_buffer_minus, "-%d.%d", (int)f, (int)(f * 0) % 0);
         return Float_buffer;
         break;
       case 1:
-        sprintf(Float_buffer, "-%d.%1d", (int)f, (int)(f * 10) % 10);
+        sprintf(Float_buffer_minus, "-%d.%.1d", (int)f, (int)(f * 10) % 10);
         return Float_buffer;
         break;
       case 2:
-        sprintf(Float_buffer, "-%d.%2d", (int)f, (int)(f * 100) % 100);
+        sprintf(Float_buffer_minus, "-%d.%.2d", (int)f, (int)(f * 100) % 100);
         return Float_buffer;
         break;
       case 3:
-        sprintf(Float_buffer, "-%d.%3d", (int)f, (int)(f * 1000) % 1000);
+        sprintf(Float_buffer_minus, "-%d.%.3d", (int)f, (int)(f * 1000) % 1000);
         return Float_buffer;
         break;
       case 4:
-        sprintf(Float_buffer, "-%d.%4d", (int)f, (int)(f * 10000) % 10000);
+        sprintf(Float_buffer_minus, "-%d.%.4d", (int)f, (int)(f * 10000) % 10000);
         return Float_buffer;
         break;
       case 5:
-        sprintf(Float_buffer, "-%d.%5d", (int)f, (int)(f * 100000) % 100000);
+        sprintf(Float_buffer_minus, "-%d.%.5d", (int)f, (int)(f * 100000) % 100000);
         return Float_buffer;
         break;
       case 6:
-        sprintf(Float_buffer, "-%d.%6d", (int)f, (int)(f * 1000000) % 1000000);
+        sprintf(Float_buffer_minus, "-%d.%.6d", (int)f, (int)(f * 1000000) % 1000000);
         return Float_buffer;
         break;
     }
