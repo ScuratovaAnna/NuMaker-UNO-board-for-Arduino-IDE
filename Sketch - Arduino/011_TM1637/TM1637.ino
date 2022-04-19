@@ -7,10 +7,7 @@ byte welcome_banner[] = {_H, _E, _L, _L, _O, _empty, _empty,
                          _1, _2, _3, _4, _5, _6, _7, _8, _9, _0
                         };
 GyverTM1637 disp(CLK, DIO);
-uint32_t Now, clocktimer;
-boolean flag;
 void setup() {
-  Serial.begin(9600);
   disp.clear();
   disp.brightness(7);  // яркость, 0 - 7 (минимум - максимум)
   disp.clear();
