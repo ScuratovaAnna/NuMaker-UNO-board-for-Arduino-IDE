@@ -15,6 +15,10 @@ Cовместимая с Arduino отладочная плата [NuMaker UNO De
 
 ![alt-текст](https://github.com/ScuratovaAnna/NuMaker-UNO-board-for-Arduino-IDE/blob/master/foto/005.jpg "NuMaker UNO Pin Design for Arduino")   
 
+## Контакты ##  
+* :left_speech_bubble: E-mail:  pivnev_tosno@mail.ru  
+
+
 
 
 
