@@ -36,8 +36,8 @@ void setup()
   pinMode(5, OUTPUT);
   AccelStepper_stepper(FULL4WIRE);
   setMaxSpeed(500);
-  setAcceleration(30);
-  moveTo(800);
+  setAcceleration(40);
+  moveTo(1200);
 }
 
 void loop()
