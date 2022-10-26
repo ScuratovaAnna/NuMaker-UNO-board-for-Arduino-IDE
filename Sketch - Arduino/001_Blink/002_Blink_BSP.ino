@@ -36,8 +36,44 @@
   GPIO_TOGGLE(PB13);
   delay(1000);
   }
+  //----------------4---------------------//  
+  uint8_t text_LED_ON[] = "Led ON\n\r";
+  uint8_t text_LED_OFF[] = "Led OFF\n\r";
+
+  void SYS_Init(void)
+  {
+    CLK_EnableModuleClock(UART0_MODULE);
+    CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART_S_HXT, CLK_CLKDIV_UART(1));
+    SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk);
+    SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD);
+  }
+  void UART0_Init()
+  {
+    SYS_ResetModule(UART0_RST);
+    UART_Open(UART0, 115200);
+  }
+  void setup()
+  {
+    SYS_UnlockReg();
+    SYS_Init();
+    SYS_LockReg();
+    UART0_Init();
+    GPIO_SetMode(PB, BIT13, GPIO_PMD_OUTPUT);
+    Serial.println("Hello!\n");
+  }
+  void loop() {
+    GPIO_TOGGLE(PB13);
+    delay(1000);
+    UART_Write(UART0, &text_LED_ON[0], 8);
+    GPIO_TOGGLE(PB13);
+    delay(1000);
+    UART_Write(UART0, &text_LED_OFF[0], 9);
+  }
   //----------------end---------------------//
 */
+
+///*---------------------------------------------------------------------------------------------------------*/
+
 //#include <stdio.h>
 //#include "NUC131.h"
 #define PLL_CLOCK   50000000
