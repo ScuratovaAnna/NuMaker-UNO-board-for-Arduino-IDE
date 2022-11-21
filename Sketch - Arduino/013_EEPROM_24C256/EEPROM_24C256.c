@@ -1,5 +1,6 @@
 // пример использования AT24Cxx для любых типов данных включая массивы и структуры
 // проверено на AT24C256
+//https://www.instructables.com/How-to-Store-Float-and-Negative-Values-on-External/
 
 #include <Wire.h>
 
@@ -17,12 +18,18 @@ struct vvv {
 struct vvv abc;
 struct vvv cab;
 
+union Data{
+  float Temp;
+  //int   number;
+  unsigned char x[4];
+}MyUni;
+
 byte data_buff[AT24_page];
 
 void setup(void) {
   Wire.begin();
   Serial.begin(115200);
-  GPIO_SetMode(PE, BIT5, GPIO_PMD_OUTPUT);//pin 7 (PE.5) output
+  GPIO_SetMode(PE, BIT5, GPIO_PMD_OUTPUT);
   AT24C_erase();  //форматируем память микросхемы EEPROM
   //форматирование занимает достаточно долго времени
   PE5 = 0;  // Снимаем блокировку записи  WP = 0
@@ -37,7 +44,7 @@ void setup(void) {
   abc.b = 64;
   abc.c = 128;
   AT24C_write(200, &abc, sizeof(abc));  // адрес ячейки 200
-  //PE5 = 1;// Устанавливаем блокировку записи  WP = 1*/
+  PE5 = 1;  // Устанавливаем блокировку записи  WP = 1*/
 
   // читаем данные
   byte bu;
@@ -70,14 +77,40 @@ void setup(void) {
   AT24C_read(2974, &zy, sizeof(zy));  //читаем данные из ячейки адресс 2974
   Serial.println(zy);
 
-  PE5 = 0;  // Снимаем блокировку записи  WP = 0
+  PE5 = 0; // Снимаем блокировку записи  WP = 0
   // записываем данные
   char buffer_in[] = "Nuvoton, NUC131SD2AE";        //
   AT24C_write(257, &buffer_in, sizeof(buffer_in));  // записываем по адресу ячейки 257
-  PE5 = 1;                                          // Устанавливаем блокировку записи  WP = 1
+  PE5 = 1; // Устанавливаем блокировку записи  WP = 1*/
+  // читаем данные
   char buffer_out[21];
   AT24C_read(257, &buffer_out, sizeof(buffer_out));  // считываем данные начиная с ячейки 257
   Serial.print(buffer_out);
+
+  //записываем в память микросхемы EEPROM дробное значение
+  MyUni.Temp = -33.58;
+
+  PE5 = 0;  // Снимаем блокировку записи  WP = 0
+  // производим запись данных
+  AT24C_write(321 , &MyUni.x[0],sizeof(MyUni.x[0]));
+  AT24C_write(322 , &MyUni.x[1],sizeof(MyUni.x[1]));
+  AT24C_write(323 , &MyUni.x[2],sizeof(MyUni.x[2]));
+  AT24C_write(324 , &MyUni.x[3],sizeof(MyUni.x[3]));
+  PE5 = 1; // Устанавливаем блокировку записи  WP = 1*/
+
+  // читаем данные
+  MyUni.x[0];
+  AT24C_read(321, &MyUni.x[0],sizeof(MyUni.x[0]));
+  MyUni.x[1];
+  AT24C_read(322, &MyUni.x[1],sizeof(MyUni.x[1]));
+  MyUni.x[2];
+  AT24C_read(323, &MyUni.x[2],sizeof(MyUni.x[2]));
+  MyUni.x[3];
+  AT24C_read(324, &MyUni.x[3],sizeof(MyUni.x[3]));
+
+  Serial.println();
+  Serial.print("Float Number:  ");
+  Serial.print(MyUni.Temp);
 }
 
 void loop() {}
