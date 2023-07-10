@@ -1,25 +1,41 @@
-/*  29.05.2021
- *  http://publicatorbar.ru/2017/12/21/arduino-multi-function-shield/
- *  подсмотренно здесь
- *  https://www.youtube.com/watch?v=BonEEaQX8vg
- */
-#include <SPI.h>
-// set pin 10 as the slave select for the digital pot:
+/**---------------------------------------------
+*\date  10.07.2021
+*  http://publicatorbar.ru/2017/12/21/arduino-multi-function-shield/
+* В примере используется ускоренный bit bang режим (любые пины).
+*
+*    NuMaker UNO                  Arduino Shild
+*   ------------                ----------------
+*  |            |              |
+*  |  10 (PA.13)|------------->| Pin 4 (LATCH_DIO)
+*  |  8 (PB.11) |------------->| Pin 7 (CLK_DIO) 
+*  |  9 (PA.14) |------------->| Pin 8 (DATA_DIO)
+*  |            |              | 
+*  |            |              | 
+*  |        GND |<------------>| GND
+*  |       +5V  |<------------>| +5V
+*
+*\ author ScuratovaAnna 
+*\ сode debugging PivnevNikolay
+*/
+
 const int slaveSelectPin = 10;
+const int DATA_Pin = 9;
+const int CLK_Pin = 8;
 /* -------------------- байты чисел от 0 до 9... 10->пустота, 11->минус --------------------------- */
 /*                           0    1   2    3    4    5    6    7   8    9    10   11                */
 /*const byte SEGMENT_MAP[] = {0x3F, 0x6, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x7, 0X7F, 0X6F, 0X00, 0X40};*/
 /* Байт-карты для выбора разряда дисплея от 1 до 4                                                  */
 /* ---------------------------- 0     1   2    3 -------------------------------------------------- */
-const byte SEGMENT_SELECT[] = {0xF7, 0xFB, 0xFD, 0xFE};
+const byte SEGMENT_SELECT[] = { 0xF7, 0xFB, 0xFD, 0xFE };
 uint8_t symbol[4];
 int i = 0;
 float z = 0.0;
 boolean variable = false;
 
-void setup () {
-  pinMode (slaveSelectPin, OUTPUT);
-  SPI.begin();
+void setup() {
+  pinMode(slaveSelectPin, OUTPUT);
+  pinMode(DATA_Pin, OUTPUT);
+  pinMode(CLK_Pin, OUTPUT);
   //-------------------------------//TIM_1
   int clock = 12000000; /* 12Mhz */
   Timer1.open(PERIODIC, clock);
@@ -47,7 +63,7 @@ void setup () {
   Timer4.start();
 }
 
-void loop() {  
+void loop() {
   switch (variable) {
     case 0:
       Display_Send_int32_t(i);
@@ -55,117 +71,130 @@ void loop() {
     case 1:
       Display_Send_float(z);
       break;
-  }  
+  }
+}
+
+void send(unsigned char X) {
+
+  for (int i = 8; i >= 1; i--) {
+    if (X & 0x80) {
+      digitalWrite(DATA_Pin, HIGH);
+    } else {
+      digitalWrite(DATA_Pin, LOW);
+    }
+    X <<= 1;
+    digitalWrite(CLK_Pin, LOW);
+    digitalWrite(CLK_Pin, HIGH);
+  }
 }
 
 /* отправляем значение (символ) в один из четырех разрядов дисплея */
-void WriteNumberToSegment(byte Segment, byte Value)
-{
+void WriteNumberToSegment(byte Segment, byte Value) {
   digitalWrite(slaveSelectPin, LOW);
-  SPI.transfer(symbol[Value]);
-  SPI.transfer(SEGMENT_SELECT[Segment]);//нетрогать выбор сигмента
+  send(symbol[Value]);
+  send(SEGMENT_SELECT[Segment]);  //нетрогать выбор сигмента
   digitalWrite(slaveSelectPin, HIGH);
 }
 
 void SEND_SYMBOL(void) {
-  WriteNumberToSegment(0 , 0);//записываем в 0 разряд
+  WriteNumberToSegment(0, 0);  //записываем в 0 разряд
   delay(1);
-  WriteNumberToSegment(1 , 1);//записываем в 1 разряд
+  WriteNumberToSegment(1, 1);  //записываем в 1 разряд
   delay(1);
-  WriteNumberToSegment(2 , 2);//записываем в 2 разряд
+  WriteNumberToSegment(2, 2);  //записываем в 2 разряд
   delay(1);
-  WriteNumberToSegment(3 , 3);//записываем в 3 разряд
+  WriteNumberToSegment(3, 3);  //записываем в 3 разряд
   delay(1);
 }
-//-------------МАССИВ_1_вывод_значения_без_точки------------------------//
-void Display_the_value (uint8_t rg, uint32_t value) {
+//------МАССИВ_1_вывод_значения_без_точки---------//
+void Display_the_value(uint8_t rg, uint32_t value) {
   switch (value) {
     case 0:
-      symbol[rg] =  0x3F; // 0
+      symbol[rg] = 0x3F;  // 0
       break;
     case 1:
-      symbol[rg] =  0x6;  // 1
+      symbol[rg] = 0x6;  // 1
       break;
     case 2:
-      symbol[rg] =  0x5B; // 2
+      symbol[rg] = 0x5B;  // 2
       break;
     case 3:
-      symbol[rg] =  0x4F; // 3
+      symbol[rg] = 0x4F;  // 3
       break;
     case 4:
-      symbol[rg] =  0x66; // 4
+      symbol[rg] = 0x66;  // 4
       break;
     case 5:
-      symbol[rg] =  0x6D; // 5
+      symbol[rg] = 0x6D;  // 5
       break;
     case 6:
-      symbol[rg] =  0x7D; // 6
+      symbol[rg] = 0x7D;  // 6
       break;
     case 7:
-      symbol[rg] =  0x7;  // 7
+      symbol[rg] = 0x7;  // 7
       break;
     case 8:
-      symbol[rg] =  0x7F; // 8
+      symbol[rg] = 0x7F;  // 8
       break;
     case 9:
-      symbol[rg] =  0X6F; // 9
+      symbol[rg] = 0X6F;  // 9
       break;
     case 254:
-      symbol[rg] =  0X40; // - минус
+      symbol[rg] = 0X40;  // - минус
       break;
     case 255:
-      symbol[rg] =  0x00; // - пустота
+      symbol[rg] = 0x00;  // - пустота
       break;
     case 256:
-      symbol[rg] =  0X8; //- подчеркивание
+      symbol[rg] = 0X8;  //- подчеркивание
       break;
   }
 }
-//-------------МАССИВ_2_вывод_значения_с_точкой-------------------------//
-void Display_the_Float_value (uint8_t rg, uint32_t value) {
+//------МАССИВ_2_вывод_значения_с_точкой----------//
+void Display_the_Float_value(uint8_t rg, uint32_t value) {
   switch (value) {
     case 0:
-      symbol[rg] =  0xBF; // 0.
+      symbol[rg] = 0xBF;  // 0.
       break;
     case 1:
-      symbol[rg] =  0x86; // 1.
+      symbol[rg] = 0x86;  // 1.
       break;
     case 2:
-      symbol[rg] =  0xDB; // 2.
+      symbol[rg] = 0xDB;  // 2.
       break;
     case 3:
-      symbol[rg] =  0xCF; // 3.
+      symbol[rg] = 0xCF;  // 3.
       break;
     case 4:
-      symbol[rg] =  0xE6; // 4.
+      symbol[rg] = 0xE6;  // 4.
       break;
     case 5:
-      symbol[rg] =  0xED; // 5.
+      symbol[rg] = 0xED;  // 5.
       break;
     case 6:
-      symbol[rg] =  0xFD; // 6.
+      symbol[rg] = 0xFD;  // 6.
       break;
     case 7:
-      symbol[rg] =  0x87; // 7.
+      symbol[rg] = 0x87;  // 7.
       break;
     case 8:
-      symbol[rg] =  0xFF; // 8.
+      symbol[rg] = 0xFF;  // 8.
       break;
     case 9:
-      symbol[rg] =  0XEF; // 9.
+      symbol[rg] = 0XEF;  // 9.
       break;
     case 254:
-      symbol[rg] =  0X40;// - минус
+      symbol[rg] = 0X40;  // - минус
       break;
     case 255:
-      symbol[rg] =  0x00;// - пустота
+      symbol[rg] = 0x00;  // - пустота
       break;
     case 256:
-      symbol[rg] =  0X8;// - подчеркивание
+      symbol[rg] = 0X8;  // - подчеркивание
       break;
   }
 }
-//-------------Функция_отправки_значений_int----------------------//
+//-------Функция_отправки_значений_int------------//
 void Display_Send_int32_t(int32_t value) {
   if (value > 9999 || value < -999) {
     Display_the_value(0, 256);
@@ -181,7 +210,9 @@ void Display_Send_int32_t(int32_t value) {
     } else {
       positive_value = true;
     }
-    uint8_t BCD_Arr[4] = { 0, };
+    uint8_t BCD_Arr[4] = {
+      0,
+    };
     uint32_t lenght;
     lenght = value;
     while (value >= 1000) {
@@ -196,7 +227,7 @@ void Display_Send_int32_t(int32_t value) {
       value -= 10;
       BCD_Arr[1]++;
     }
-    BCD_Arr[0] = (uint8_t) (value);
+    BCD_Arr[0] = (uint8_t)(value);
     if (lenght < 10) {
       Display_the_value(3, 255);
       Display_the_value(2, 255);
@@ -208,8 +239,7 @@ void Display_Send_int32_t(int32_t value) {
       }
       Display_the_value(0, BCD_Arr[0]);
       SEND_SYMBOL();
-    }
-    else if (lenght < 100) {
+    } else if (lenght < 100) {
       Display_the_value(3, 255);
       Display_the_value(2, 255);
       if (positive_value == true) {
@@ -220,8 +250,7 @@ void Display_Send_int32_t(int32_t value) {
       Display_the_value(1, BCD_Arr[1]);
       Display_the_value(0, BCD_Arr[0]);
       SEND_SYMBOL();
-    }
-    else if (lenght < 1000) {
+    } else if (lenght < 1000) {
       Display_the_value(3, 255);
       if (positive_value == true) {
         Display_the_value(3, 255);
@@ -232,8 +261,7 @@ void Display_Send_int32_t(int32_t value) {
       Display_the_value(1, BCD_Arr[1]);
       Display_the_value(0, BCD_Arr[0]);
       SEND_SYMBOL();
-    }
-    else if (lenght < 10000) {
+    } else if (lenght < 10000) {
       if (positive_value == false) {
         Display_the_value(0, 256);
         Display_the_value(1, 256);
@@ -248,7 +276,7 @@ void Display_Send_int32_t(int32_t value) {
     }
   }
 }
-//-------------Функция_отправки_значений_float----------------------//
+//--------Функция_отправки_значений_float---------//
 void Display_Send_float(float value) {
   if (value > 999.9f || value < -99.9f) {
     Display_the_Float_value(0, 256);
@@ -269,7 +297,9 @@ void Display_Send_float(float value) {
       positive_value = true;
     }
     //массив ------------------
-    uint8_t BCD_Arr[4] = { 0, };
+    uint8_t BCD_Arr[4] = {
+      0,
+    };
     int32_t lenght;
     lenght = value_conv;
     while (value_conv >= 1000) {
@@ -284,7 +314,7 @@ void Display_Send_float(float value) {
       value_conv -= 10;
       BCD_Arr[1]++;
     }
-    BCD_Arr[0] = (uint8_t) (value_conv);
+    BCD_Arr[0] = (uint8_t)(value_conv);
 
     if (lenght < 10) {
       Display_the_value(3, 255);
@@ -297,8 +327,7 @@ void Display_Send_float(float value) {
       Display_the_Float_value(1, BCD_Arr[1]);
       Display_the_value(0, BCD_Arr[0]);
       SEND_SYMBOL();
-    }
-    else if (lenght < 100) {
+    } else if (lenght < 100) {
       Display_the_value(3, 255);
       if (positive_value == true) {
         Display_the_value(2, 255);
@@ -308,8 +337,7 @@ void Display_Send_float(float value) {
       Display_the_Float_value(1, BCD_Arr[1]);
       Display_the_value(0, BCD_Arr[0]);
       SEND_SYMBOL();
-    }
-    else if (lenght < 1000) {
+    } else if (lenght < 1000) {
       if (positive_value == true) {
         Display_the_value(3, 255);
       } else {
@@ -319,8 +347,7 @@ void Display_Send_float(float value) {
       Display_the_Float_value(1, BCD_Arr[1]);
       Display_the_value(0, BCD_Arr[0]);
       SEND_SYMBOL();
-    }
-    else if (lenght < 10000) {
+    } else if (lenght < 10000) {
       if (positive_value == false) {
         Display_the_value(0, 256);
         Display_the_value(1, 256);
@@ -336,8 +363,7 @@ void Display_Send_float(float value) {
   }
 }
 //--------обработчик_прерывания_TIM_1-------------//
-void timer_ISR_1(uint8_t num)
-{
+void timer_ISR_1(uint8_t num) {
   i++;
   if (i == 999) {
     Timer1.detachInterrupt();
@@ -345,33 +371,30 @@ void timer_ISR_1(uint8_t num)
   }
 }
 //--------обработчик_прерывания_TIM_2-------------//
-void timer_ISR_2(uint8_t num)
-{
+void timer_ISR_2(uint8_t num) {
   i--;
-  if (i == -999) {    
+  if (i == -999) {
     Timer3.attachInterrupt(timer_ISR_3);
     Timer2.detachInterrupt();
-	variable = true;
-	i=0;
+    variable = true;
+    i = 0;
   }
 }
 //--------обработчик_прерывания_TIM_3-------------//
-void timer_ISR_3(uint8_t num)
-{
-	z+=0.1;
-	if(z > 99.9f){
-  Timer4.attachInterrupt(timer_ISR_4);
-  Timer3.detachInterrupt();
-	}
+void timer_ISR_3(uint8_t num) {
+  z += 0.1;
+  if (z > 99.9f) {
+    Timer4.attachInterrupt(timer_ISR_4);
+    Timer3.detachInterrupt();
+  }
 }
 //--------обработчик_прерывания_TIM_4-------------//
-void timer_ISR_4(uint8_t num)
-{
-	z-=0.1;
-	if(z < -99.9f){
-  Timer1.attachInterrupt(timer_ISR_1);
-  Timer4.detachInterrupt();
-  variable = false;
-  z=0.0;
-	}
+void timer_ISR_4(uint8_t num) {
+  z -= 0.1;
+  if (z < -99.9f) {
+    Timer1.attachInterrupt(timer_ISR_1);
+    Timer4.detachInterrupt();
+    variable = false;
+    z = 0.0;
+  }
 }
