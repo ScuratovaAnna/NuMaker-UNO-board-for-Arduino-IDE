@@ -1,5 +1,6 @@
 ## NuMaker UNO board for Arduino IDE.  
 
+[![Foo](https://img.shields.io/badge/ПОДПИСАТЬСЯ-Nuvoton%20Arm%20CortexM0%20MCUs-brightgreen.svg?style=social&logo=vk&color=blue)](https://vk.com/club217558848)  
 [![Foo](https://img.shields.io/badge/ПОДПИСАТЬСЯ-Nuvoton%20Programming-brightgreen.svg?style=social&logo=telegram&color=blue)](https://t.me/nuvoton_programming)  
 
 Cовместимая с Arduino отладочная плата [NuMaker UNO Development Board.](https://www.nuvoton.com/products/iot-solution/arduino-compatible-platform/numaker-uno/)  
