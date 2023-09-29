@@ -1,5 +1,9 @@
  /**-------------------------------------------------------------------
- *\date  10.06.2023
+ *\date  10.09.2023
+ *
+ * Сылки на источник :
+ * https://github.com/Solderingironspb/Lessons-Stm32/tree/Practice%2311
+ * https://www.youtube.com/watch?v=ajEqZN5s5xc
  *
  *************************************************************************
  * В данном примере подключим, инициализируем и выведем Logo на дисплей.
@@ -10,17 +14,17 @@
  *  |               |       |
  *  |               |       |
  *  |               |       |
- *  |   (PB.11)  8~ | ----> | 
- *  |   (PA.14)  9~ | ----> | 
- *  |   (PA.13) 10~ | ----> | 
+ *  |   (PB.11)  8~ | ----> | CS  (CS)
+ *  |   (PA.14)  9~ | ----> | RSE (RST(Reset))
+ *  |   (PA.13) 10~ | ----> | RS  (DC(Data/Command) 
  *  |               |       |
- *  |               | ----> | 
- *  |               | ----> | 
+ *  |   (PC.1)      | ----> | SCL (SCK)    SPI0_CLK   Physical Pin 27
+ *  |   (PC.3)      | ----> | SI  (MOSI)   SPI0_MOSI  Physical Pin 25
  *  |               |       |
- *  |         +3.3V | <---> | 
- *  |           GND | <---> | 
- *  |         +3.3V | <---> | 
- *  |           GND | <---> | 
+ *  |         +3.3V | <---> | +3.3V
+ *  |           GND | <---> | GND
+ *  |         +3.3V | <---> | +3.3V 
+ *  |           GND | <---> | GND
  *
  *\ author         PivnevNikolay , ScuratovaAnna 
  *\ сode debugging ScuratovaAnna
