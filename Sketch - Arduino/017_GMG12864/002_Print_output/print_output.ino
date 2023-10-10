@@ -1,12 +1,12 @@
  /**-------------------------------------------------------------------
  *\date  29.09.2023
  *
- * Сcылки на источник :
+ * Сылки на источник :
  * https://github.com/Solderingironspb/Lessons-Stm32/tree/Practice%2311
  * https://www.youtube.com/watch?v=ajEqZN5s5xc
  *
  *************************************************************************
- * Выводим текст на экран.
+ * 
  *************************************************************************
  *
  *   NuMaker  UNO             GMG12864 
@@ -18,8 +18,8 @@
  *  |   (PA.14)  9~ | ----> | RSE (RST(Reset))
  *  |   (PA.13) 10~ | ----> | RS  (DC(Data/Command) 
  *  |               |       |
- *  |   (PC.1)      | ----> | SCL (SCK)    NuMaker-UNO --> SPI0_CLK   Physical Pin 27
- *  |   (PC.3)      | ----> | SI  (MOSI)   NuMaker-UNO --> SPI0_MOSI  Physical Pin 25
+ *  |   (PC.1)      | ----> | SCL (SCK)    SPI0_CLK   Physical Pin 27
+ *  |   (PC.3)      | ----> | SI  (MOSI)   SPI0_MOSI  Physical Pin 25
  *  |               |       |
  *  |         +3.3V | <---> | +3.3V
  *  |           GND | <---> | GND
@@ -220,166 +220,167 @@ const uint8_t Font_5x7[] = { 0x00, 0x00, 0x00, 0x00, 0x00, //0/ --> space     20
 
 /*-------------------------------------- Font 3*5 ------------------------------------*/
 const uint8_t Font_3x5[] = { 0x00, 0x00, 0x00, //0/ --> space     20
-		0x17, 0x00, 0x00, //(1) --> !
-		0x03, 0x00, 0x03, //(2) --> "
-		0xFF, 0x0A, 0xFF, //(3) --> #
-		0x17, 0xFF, 0x1D, //(4) --> $
-		0x09, 0x04, 0x12, //(5) --> %
-		0x0E, 0x1B, 0x0A, //(6) --> &
-		0x03, 0x00, 0x00, //(8) --> (
-		0x11, 0x0E, 0x00, //(9) --> )
-		0x04, 0x0A, 0x04, //(10) --> *
-		0x04, 0x0E, 0x04, //(11) --> +
-		0x10, 0x18, 0x00, //(12) --> ,
-		0x04, 0x04, 0x04, //(13) --> -
-		0x10, 0x00, 0x00, //(14) --> .
-		0x08, 0x04, 0x02, //(15) --> /
-		0xFF, 0x11, 0xFF, //(16) --> 0
-		0x11, 0xFF, 0x10, //(17) --> 1
-		0x1D, 0x15, 0x17, //(18) --> 2
-		0x15, 0x15, 0xFF, //(19) --> 3
-		0x07, 0x04, 0xFF, //(20) --> 4
-		0x17, 0x15, 0x1D, //(21) --> 5
-		0xFF, 0x15, 0x1D, //(22) --> 6
-		0x01, 0x01, 0xFF, //(23) --> 7
-		0xFF, 0x15, 0xFF, //(24) --> 8
-		0x17, 0x15, 0x1F, //(25) --> 9
-		0x0A, 0x00, 0x00, //(26) --> :
-		0x10, 0x0A, 0x00, //(27) --> ;
-		0x04, 0x0A, 0x00, //(28) --> <
-		0x0A, 0x0A, 0x0A, //(29) --> =
-		0x0A, 0x04, 0x00, //(30) --> >
-		0x01, 0x15, 0x07, //(31) --> ?
-		0x1F, 0x11, 0x17, //(32) --> @
-		0x1F, 0x05, 0x1F, //(33) --> A
-		0x1F, 0x15, 0x1B, //(34) --> B
-		0x1F, 0x11, 0x11, //(35) --> C
-		0x1F, 0x11, 0x0E, //(36) --> D
-		0x1F, 0x15, 0x15, //(37) --> E
-		0x1F, 0x05, 0x05, //(38) --> F
-		0x1F, 0x11, 0x1D, //(39) --> G
-		0x1F, 0x04, 0x1F, //(40) --> H
-		0x11, 0x1F, 0x11, //(41) --> I
-		0x18, 0x10, 0x1F, //(42) --> J
-		0x1F, 0x04, 0x1B, //(43) --> K
-		0x1F, 0x10, 0x10, //(44) --> L
-		0x1F, 0x02, 0x1F, //(45) --> M
-		0x1F, 0x01, 0x1F, //(46) --> N
-		0x1F, 0x11, 0x1F, //(47) --> O
-		0x1F, 0x05, 0x07, //(48) --> P
-		0x0F, 0x19, 0x0F, //(49) --> Q
-		0x1F, 0x05, 0x1B, //(50) --> R
-		0x17, 0x15, 0x1D, //(51) --> S
-		0x01, 0x1F, 0x01, //(52) --> T
-		0x1F, 0x10, 0x1F, //(53) --> U
-		0x0F, 0x10, 0x0F, //(54) --> V
-		0x1F, 0x08, 0x1F, //(55) --> W
-		0x1B, 0x04, 0x1B, //(56) --> X
-		0x03, 0x1C, 0x03, //(57) --> Y
-		0x19, 0x15, 0x13, //(58) --> Z
-		0x1F, 0x11, 0x00, //(59) --> [
-		0x02, 0x04, 0x08, //(60) --> '\'
-		0x11, 0x1F, 0x00, //(61) --> ]
-		0x02, 0x01, 0x02, //(62) --> ^
-		0x10, 0x10, 0x10, //(63) --> _
-		0x01, 0x02, 0x00, //(64) --> `
-		0x0C, 0x12, 0x1E, //(65) --> a
-		0x1E, 0x14, 0x08, //(66) --> b
-		0x1C, 0x14, 0x14, //(67) --> c
-		0x0C, 0x12, 0x1F, //(68) --> d
-		0x0C, 0x1A, 0x14, //(69) --> e
-		0x04, 0x1F, 0x05, //(70) --> f
-		0x17, 0x15, 0x0F, //(71) --> g
-		0x1F, 0x02, 0x1C, //(72) --> h
-		0x00, 0x1D, 0x00, //(73) --> i
-		0x10, 0x0D, 0x00, //(74) --> j
-		0x1F, 0x04, 0x1A, //(75) --> k
-		0x01, 0x1F, 0x00, //(76) --> l
-		0x1E, 0x04, 0x1E, //(77) --> m
-		0x1E, 0x02, 0x1E, //(78) --> n
-		0x1E, 0x12, 0x1E, //(79) --> o
-		0x1E, 0x0A, 0x04, //(80) --> p
-		0x04, 0x0A, 0x1E, //(81) --> q
-		0x1E, 0x02, 0x06, //(82) --> r
-		0x14, 0x12, 0x0A, //(83) --> s
-		0x02, 0x1F, 0x12, //(84) --> t
-		0x1E, 0x10, 0x1E, //(85) --> u
-		0x0E, 0x10, 0x0E, //(86) --> v
-		0x1E, 0x08, 0x1E, //(87) --> w
-		0x1A, 0x04, 0x1A, //(88) --> x
-		0x13, 0x14, 0x0F, //(89) --> y
-		0x1A, 0x12, 0x16, //(90) --> z
-		0x04, 0x1F, 0x11, //(91) --> {
-		0x00, 0x1F, 0x00, //(92) --> |
-		0x11, 0x1F, 0x04, //(93) --> }
-		0x0C, 0x04, 0x06, //(94) --> ~
-		0x1F, 0x05, 0x1F, //(95) --> А
-		0x1F, 0x15, 0x1D, //(96) --> Б
-		0x1F, 0x15, 0x1B, //(97) --> В
-		0x1F, 0x01, 0x01, //(98) --> Г
-		0x1E, 0x11, 0x1E, //(99) --> Д
-		0x1F, 0x15, 0x15, //(100) --> Е
-		0x1B, 0x1F, 0x1B, //(101) --> Ж
-		0x15, 0x15, 0x1B, //(102) --> З
-		0x1F, 0x10, 0x1F, //(103) --> И
-		0x1D, 0x11, 0x1D, //(104) --> Й
-		0x1F, 0x04, 0x1B, //(105) --> К
-		0x1E, 0x01, 0x1F, //(106) --> Л
-		0x1F, 0x02, 0x1F, //(107) --> М
-		0x1F, 0x04, 0x1F, //(108) --> Н
-		0x1F, 0x11, 0x1F, //(109) --> О
-		0x1F, 0x01, 0x1F, //(110) --> П
-		0x1F, 0x05, 0x07, //(111) --> Р
-		0x1F, 0x11, 0x11, //(112) --> С
-		0x01, 0x1F, 0x01, //(113) --> Т
-		0x13, 0x14, 0x1F, //(114) --> У
-		0x0E, 0x1B, 0x0E, //(115) --> Ф
-		0x1B, 0x04, 0x1B, //(116) --> Х
-		0x0F, 0x08, 0x1F, //(117) --> Ц
-		0x07, 0x04, 0x1F, //(118) --> Ч
-		0x1F, 0x18, 0x1F, //(119) --> Ш
-		0x0F, 0x0C, 0x1F, //(120) --> Щ
-		0x01, 0x1F, 0x1C, //(121) --> Ъ
-		0x1F, 0x14, 0x1F, //(122) --> Ы
-		0x15, 0x15, 0x0E, //(123) --> Э
-		0x1F, 0x14, 0x08, //(124) --> Ь
-		0x1F, 0x0E, 0x1F, //(125) --> Ю
-		0x1B, 0x05, 0x1F, //(126) --> Я
-		0x0C, 0x12, 0x1E, //(127) --> a
-		0x1E, 0x15, 0x1D, //(128) --> б
-		0x1E, 0x16, 0x0C, //(129) --> в
-		0x1E, 0x02, 0x02, //(130) --> г
-		0x1C, 0x12, 0x1C, //(131) --> д
-		0x0C, 0x1A, 0x14, //(132) --> е
-		0x1A, 0x1E, 0x1A, //(133) --> ж
-		0x12, 0x16, 0x1E, //(134) --> з
-		0x1E, 0x10, 0x1E, //(135) --> и
-		0x1A, 0x12, 0x1A, //(136) --> й
-		0x1E, 0x04, 0x1A, //(137) --> к
-		0x1C, 0x02, 0x1E, //(138) --> л
-		0x1E, 0x04, 0x1E, //(139) --> м
-		0x1E, 0x08, 0x1E, //(140) --> н
-		0x1E, 0x12, 0x1E, //(141) --> о
-		0x1E, 0x02, 0x1E, //(142) --> п
-		0x1E, 0x0A, 0x04, //(143) --> р
-		0x1E, 0x12, 0x12, //(144) --> с
-		0x02, 0x1E, 0x02, //(145) --> т
-		0x16, 0x14, 0x0E, //(146) --> у
-		0x0C, 0x1E, 0x0C, //(147) --> ф
-		0x1A, 0x0C, 0x1A, //(148) --> х
-		0x0E, 0x08, 0x1E, //(149) --> ц
-		0x06, 0x04, 0x1E, //(150) --> ч
-		0x1E, 0x18, 0x1E, //(151) --> ш
-		0x0E, 0x0C, 0x1E, //(152) --> щ
-		0x02, 0x1E, 0x18, //(153) --> ъ
-		0x1E, 0x14, 0x1E, //(154) --> ы
-		0x1E, 0x18, 0x00, //(155) --> ь
-		0x12, 0x16, 0x0C, //(156) --> э
-		0x1E, 0x0C, 0x1E, //(157) --> ю
-		0x14, 0x0A, 0x1E, //(158) --> я
-		0x1F, 0x15, 0x15, //(159) --> Ё
-		0x0C, 0x1A, 0x14, //(160) --> ё
-		0x03, 0x03, 0x00, //(161) --> °
+		0x17, 0x00, 0x00, //1/ --> !
+		0x03, 0x00, 0x03, //2/ --> "
+		0xFF, 0x0A, 0xFF, //3/ --> #
+		0x17, 0xFF, 0x1D, //4/ --> $
+		0x09, 0x04, 0x12, //5/ --> %
+		0x0E, 0x1B, 0x0A, //6/ --> &
+		0x03, 0x00, 0x00, //7/ --> '
+		0x0E, 0x11, 0x00, //8/ --> (
+		0x11, 0x0E, 0x00, //9/ --> )
+		0x04, 0x0A, 0x04, //10/ --> *
+		0x04, 0x0E, 0x04, //11/ --> +
+		0x10, 0x18, 0x00, //12/ --> ,
+		0x04, 0x04, 0x04, //13/ --> -
+		0x10, 0x00, 0x00, //14/ --> .
+		0x08, 0x04, 0x02, //15/ --> /
+		0xFF, 0x11, 0xFF, //16/ --> 0
+		0x11, 0xFF, 0x10, //17/ --> 1
+		0x1D, 0x15, 0x17, //18/ --> 2
+		0x15, 0x15, 0xFF, //19/ --> 3
+		0x07, 0x04, 0xFF, //20/ --> 4
+		0x17, 0x15, 0x1D, //21/ --> 5
+		0xFF, 0x15, 0x1D, //22/ --> 6
+		0x01, 0x01, 0xFF, //23/ --> 7
+		0xFF, 0x15, 0xFF, //24/ --> 8
+		0x17, 0x15, 0x1F, //25/ --> 9
+		0x0A, 0x00, 0x00, //26/ --> :
+		0x10, 0x0A, 0x00, //27/ --> ;
+		0x04, 0x0A, 0x00, //28/ --> <
+		0x0A, 0x0A, 0x0A, //29/ --> =
+		0x0A, 0x04, 0x00, //30/ --> >
+		0x01, 0x15, 0x07, //31/ --> ?
+		0x1F, 0x11, 0x17, //32/ --> @
+		0x1F, 0x05, 0x1F, //33/ --> A
+		0x1F, 0x15, 0x1B, //34/ --> B
+		0x1F, 0x11, 0x11, //35/ --> C
+		0x1F, 0x11, 0x0E, //36/ --> D
+		0x1F, 0x15, 0x15, //37/ --> E
+		0x1F, 0x05, 0x05, //38/ --> F
+		0x1F, 0x11, 0x1D, //39/ --> G
+		0x1F, 0x04, 0x1F, //40/ --> H
+		0x11, 0x1F, 0x11, //41/ --> I
+		0x18, 0x10, 0x1F, //42/ --> J
+		0x1F, 0x04, 0x1B, //43/ --> K
+		0x1F, 0x10, 0x10, //44/ --> L
+		0x1F, 0x02, 0x1F, //45/ --> M
+		0x1F, 0x01, 0x1F, //46/ --> N
+		0x1F, 0x11, 0x1F, //47/ --> O
+		0x1F, 0x05, 0x07, //48/ --> P
+		0x0F, 0x19, 0x0F, //49/ --> Q
+		0x1F, 0x05, 0x1B, //50/ --> R
+		0x17, 0x15, 0x1D, //51/ --> S
+		0x01, 0x1F, 0x01, //52/ --> T
+		0x1F, 0x10, 0x1F, //53/ --> U
+		0x0F, 0x10, 0x0F, //54/ --> V
+		0x1F, 0x08, 0x1F, //55/ --> W
+		0x1B, 0x04, 0x1B, //56/ --> X
+		0x03, 0x1C, 0x03, //57/ --> Y
+		0x19, 0x15, 0x13, //58/ --> Z
+		0x1F, 0x11, 0x00, //59/ --> [
+		0x02, 0x04, 0x08, //60/ --> '\'
+		0x11, 0x1F, 0x00, //61/ --> ]
+		0x02, 0x01, 0x02, //62/ --> ^
+		0x10, 0x10, 0x10, //63/ --> _
+		0x01, 0x02, 0x00, //64/ --> `
+		0x0C, 0x12, 0x1E, //65/ --> a
+		0x1E, 0x14, 0x08, //66/ --> b
+		0x1C, 0x14, 0x14, //67/ --> c
+		0x0C, 0x12, 0x1F, //68/ --> d
+		0x0C, 0x1A, 0x14, //69/ --> e
+		0x04, 0x1F, 0x05, //70/ --> f
+		0x17, 0x15, 0x0F, //71/ --> g
+		0x1F, 0x02, 0x1C, //72/ --> h
+		0x00, 0x1D, 0x00, //73/ --> i
+		0x10, 0x0D, 0x00, //74/ --> j
+		0x1F, 0x04, 0x1A, //75/ --> k
+		0x01, 0x1F, 0x00, //76/ --> l
+		0x1E, 0x04, 0x1E, //77/ --> m
+		0x1E, 0x02, 0x1E, //78/ --> n
+		0x1E, 0x12, 0x1E, //79/ --> o
+		0x1E, 0x0A, 0x04, //80/ --> p
+		0x04, 0x0A, 0x1E, //81/ --> q
+		0x1E, 0x02, 0x06, //82/ --> r
+		0x14, 0x12, 0x0A, //83/ --> s
+		0x02, 0x1F, 0x12, //84/ --> t
+		0x1E, 0x10, 0x1E, //85/ --> u
+		0x0E, 0x10, 0x0E, //86/ --> v
+		0x1E, 0x08, 0x1E, //87/ --> w
+		0x1A, 0x04, 0x1A, //88/ --> x
+		0x13, 0x14, 0x0F, //89/ --> y
+		0x1A, 0x12, 0x16, //90/ --> z
+		0x04, 0x1F, 0x11, //91/ --> {
+		0x00, 0x1F, 0x00, //92/ --> |
+		0x11, 0x1F, 0x04, //93/ --> }
+		0x0C, 0x04, 0x06, //94/ --> ~
+		0x1F, 0x05, 0x1F, //95/ --> А
+		0x1F, 0x15, 0x1D, //96/ --> Б
+		0x1F, 0x15, 0x1B, //97/ --> В
+		0x1F, 0x01, 0x01, //98/ --> Г
+		0x1E, 0x11, 0x1E, //99/ --> Д
+		0x1F, 0x15, 0x15, //100/ --> Е
+		0x1B, 0x1F, 0x1B, //101/ --> Ж
+		0x15, 0x15, 0x1B, //102/ --> З
+		0x1F, 0x10, 0x1F, //103/ --> И
+		0x1D, 0x11, 0x1D, //104/ --> Й
+		0x1F, 0x04, 0x1B, //105/ --> К
+		0x1E, 0x01, 0x1F, //106/ --> Л
+		0x1F, 0x02, 0x1F, //107/ --> М
+		0x1F, 0x04, 0x1F, //108/ --> Н
+		0x1F, 0x11, 0x1F, //109/ --> О
+		0x1F, 0x01, 0x1F, //110/ --> П
+		0x1F, 0x05, 0x07, //111/ --> Р
+		0x1F, 0x11, 0x11, //112/ --> С
+		0x01, 0x1F, 0x01, //113/ --> Т
+		0x13, 0x14, 0x1F, //114/ --> У
+		0x0E, 0x1B, 0x0E, //115/ --> Ф
+		0x1B, 0x04, 0x1B, //116/ --> Х
+		0x0F, 0x08, 0x1F, //117/ --> Ц
+		0x07, 0x04, 0x1F, //118/ --> Ч
+		0x1F, 0x18, 0x1F, //119/ --> Ш
+		0x0F, 0x0C, 0x1F, //120/ --> Щ
+		0x01, 0x1F, 0x1C, //121/ --> Ъ
+		0x1F, 0x14, 0x1F, //122/ --> Ы
+		0x15, 0x15, 0x0E, //123/ --> Э
+		0x1F, 0x14, 0x08, //124/ --> Ь
+		0x1F, 0x0E, 0x1F, //125/ --> Ю
+		0x1B, 0x05, 0x1F, //126/ --> Я
+		0x0C, 0x12, 0x1E, //127/ --> a
+		0x1E, 0x15, 0x1D, //128/ --> б
+		0x1E, 0x16, 0x0C, //129/ --> в
+		0x1E, 0x02, 0x02, //130/ --> г
+		0x1C, 0x12, 0x1C, //131/ --> д
+		0x0C, 0x1A, 0x14, //132/ --> е
+		0x1A, 0x1E, 0x1A, //133/ --> ж
+		0x12, 0x16, 0x1E, //134/ --> з
+		0x1E, 0x10, 0x1E, //135/ --> и
+		0x1A, 0x12, 0x1A, //136/ --> й
+		0x1E, 0x04, 0x1A, //137/ --> к
+		0x1C, 0x02, 0x1E, //138/ --> л
+		0x1E, 0x04, 0x1E, //139/ --> м
+		0x1E, 0x08, 0x1E, //140/ --> н
+		0x1E, 0x12, 0x1E, //141/ --> о
+		0x1E, 0x02, 0x1E, //142/ --> п
+		0x1E, 0x0A, 0x04, //143/ --> р
+		0x1E, 0x12, 0x12, //144/ --> с
+		0x02, 0x1E, 0x02, //145/ --> т
+		0x16, 0x14, 0x0E, //146/ --> у
+		0x0C, 0x1E, 0x0C, //147/ --> ф
+		0x1A, 0x0C, 0x1A, //148/ --> х
+		0x0E, 0x08, 0x1E, //149/ --> ц
+		0x06, 0x04, 0x1E, //150/ --> ч
+		0x1E, 0x18, 0x1E, //151/ --> ш
+		0x0E, 0x0C, 0x1E, //152/ --> щ
+		0x02, 0x1E, 0x18, //153/ --> ъ
+		0x1E, 0x14, 0x1E, //154/ --> ы
+		0x1E, 0x18, 0x00, //155/ --> ь
+		0x12, 0x16, 0x0C, //156/ --> э
+		0x1E, 0x0C, 0x1E, //157/ --> ю
+		0x14, 0x0A, 0x1E, //158/ --> я
+		0x1F, 0x15, 0x15, //159/ --> Ё
+		0x0C, 0x1A, 0x14, //160/ --> ё
+		0x03, 0x03, 0x00, //161/ --> °
 		};
 /*-------------------------------------- Font 3*5 ------------------------------------*/
 
@@ -480,12 +481,14 @@ void GMG12864_Update(void) {
 	cs_reset();
 }
 /*------------- The function of output of the frame buffer to the display ------------*/
+
 /*-------------------------------- Pixel drawing function ----------------------------*/
 void GMG12864_Draw_pixel(int16_t x, int16_t y, uint8_t color) {
 	if (x >= GMG12864_width || x < 0 || y >= GMG12864_height || y < 0) {
 		return;
 	} else {
 		uint16_t array_pos = x + ((y / 8) * GMG12864_width);
+
 		if (color) {
 			Frame_buffer[array_pos] |= 1 << (y % 8);
 		} else {
@@ -494,200 +497,205 @@ void GMG12864_Draw_pixel(int16_t x, int16_t y, uint8_t color) {
 	}
 }
 /*-------------------------------- Pixel drawing function ----------------------------*/
-/*--------------- The function of displaying a symbol on the display -----------------*/
+
+/*---------------------Функция вывода символа на дисплей-----------------------------*/
 void GMG12864_Print_symbol_5x7(uint8_t x, uint8_t y, uint16_t symbol, uint8_t inversion) {
-	uint8_t x_start = x; //initial position by x
-	uint8_t x_stop = x + 5; //the final position in x, taking into account the inter-character interval
+	uint8_t x_start = x; //начальное положение по x
+	uint8_t x_stop = x + 5; //конечное положение по x с учетом межсимвольного интервала
 	for (uint8_t x = x_start; x <= x_stop; x++) {
-		if (x == x_stop) { //Fill in the intersymbol intervals
-			for (uint8_t i = 0; i <= 6; i++) { //from 0 to 6, because the font is 7 pixels high
+		if (x == x_stop) { //Заполняем межсимвольные интервалы
+			for (uint8_t i = 0; i <= 6; i++) { // от 0 до 6, т.к. шрифт высотой 7 пикселей
 				if (0x00 & (1 << i)) {
 					if (inversion) {
-						GMG12864_Draw_pixel(x, y + i, 0);//Paint over a pixel
+						GMG12864_Draw_pixel(x, y + i, 0); //Закрасить пиксель
 					} else {
-						GMG12864_Draw_pixel(x, y + i, 1);//Paint over a pixel
+						GMG12864_Draw_pixel(x, y + i, 1); //Закрасить пиксель
 					}
 				} else {
 					if (inversion) {
-						GMG12864_Draw_pixel(x, y + i, 1);//Clear Pixel
+						GMG12864_Draw_pixel(x, y + i, 1); //Очистить пиксель
 					} else {
-						GMG12864_Draw_pixel(x, y + i, 0);//Clear Pixelь
+						GMG12864_Draw_pixel(x, y + i, 0); //Очистить пиксель
 					}
 				}
 			}
-		} else {//Fill in useful information
-			for (uint8_t i = 0; i <= 6; i++) {//from 0 to 6, because the font is 7 pixels high
+		} else { //Заполняем полезной информацией
+			for (uint8_t i = 0; i <= 6; i++) { // от 0 до 6, т.к. шрифт высотой 7 пикселей
 				if (Font_5x7[(symbol * 5) + x - x_start] & (1 << i)) {
 					if (inversion) {
-						GMG12864_Draw_pixel(x, y + i, 0);//Paint over a pixel
+						GMG12864_Draw_pixel(x, y + i, 0); //Закрасить пиксель
 					} else {
-						GMG12864_Draw_pixel(x, y + i, 1);//Paint over a pixel
+						GMG12864_Draw_pixel(x, y + i, 1); //Закрасить пиксель
 					}
 				} else {
 					if (inversion) {
-						GMG12864_Draw_pixel(x, y + i, 1);//Clear Pixel
+						GMG12864_Draw_pixel(x, y + i, 1); //Очистить пиксель
 					} else {
-						GMG12864_Draw_pixel(x, y + i, 0);//Clear Pixel
+						GMG12864_Draw_pixel(x, y + i, 0); //Очистить пиксель
 					}
 				}
 			}
 		}
 	}
 }
-/*--------------- The function of displaying a symbol on the display -----------------*/
-/*--------------- The function of displaying a symbol on the display -----------------*/
+/*---------------------Функция вывода символа на дисплей-----------------------------*/
+
+/*---------------------Функция вывода символа на дисплей-----------------------------*/
 void GMG12864_Print_symbol_3x5(uint8_t x, uint8_t y, uint16_t symbol, uint8_t inversion) {
-	uint8_t x_start = x; //initial position by x
-	uint8_t x_stop = x + 3; //the final position in x, taking into account the inter-character interval
+/// Функция вывода символа на дисплей
+	uint8_t x_start = x; //начальное положение по x
+	uint8_t x_stop = x + 3; //конечное положение по x с учетом межсимвольного интервала
 	for (uint8_t x = x_start; x <= x_stop; x++) {
-		if (x == x_stop) {//Fill in the intersymbol intervals
-			for (uint8_t i = 0; i <= 4; i++) { //from 0 to 6, because the font is 7 pixels high
+		if (x == x_stop) { //Заполняем межсимвольные интервалы
+			for (uint8_t i = 0; i <= 4; i++) { // от 0 до 6, т.к. шрифт высотой 7 пикселей
 				if (0x00 & (1 << i)) {
 					if (inversion) {
-						GMG12864_Draw_pixel(x, y + i, 0);//Paint over a pixel
+						GMG12864_Draw_pixel(x, y + i, 0); //Закрасить пиксель
 					} else {
-						GMG12864_Draw_pixel(x, y + i, 1);//Paint over a pixel
+						GMG12864_Draw_pixel(x, y + i, 1); //Закрасить пиксель
 					}
 				} else {
 					if (inversion) {
-						GMG12864_Draw_pixel(x, y + i, 1);//Clear Pixel
+						GMG12864_Draw_pixel(x, y + i, 1); //Очистить пиксель
 					} else {
-						GMG12864_Draw_pixel(x, y + i, 0);//Clear Pixel
+						GMG12864_Draw_pixel(x, y + i, 0); //Очистить пиксель
 					}
 				}
 			}
-		} else {//Fill in useful information
-			for (uint8_t i = 0; i <= 4; i++) { //from 0 to 6, because the font is 7 pixels high
+		} else { //Заполняем полезной информацией
+			for (uint8_t i = 0; i <= 4; i++) { // от 0 до 6, т.к. шрифт высотой 7 пикселей
 				if (Font_3x5[(symbol * 3) + x - x_start] & (1 << i)) {
 					if (inversion) {
-						GMG12864_Draw_pixel(x, y + i, 0);//Paint over a pixel
+						GMG12864_Draw_pixel(x, y + i, 0); //Закрасить пиксель
 					} else {
-						GMG12864_Draw_pixel(x, y + i, 1);//Paint over a pixel
+						GMG12864_Draw_pixel(x, y + i, 1); //Закрасить пиксель
 					}
 				} else {
 					if (inversion) {
-						GMG12864_Draw_pixel(x, y + i, 1);//Clear Pixel
+						GMG12864_Draw_pixel(x, y + i, 1); //Очистить пиксель
 					} else {
-						GMG12864_Draw_pixel(x, y + i, 0);//Clear Pixel
+						GMG12864_Draw_pixel(x, y + i, 0); //Очистить пиксель
 					}
 				}
 			}
 		}
 	}
 }
-/*--------------- The function of displaying a symbol on the display -----------------*/
-/*-------------------- UTF-8 decoding function into a character set ------------------*/
+/*---------------------Функция вывода символа на дисплей-----------------------------*/
+
+/*----------------Функция декодирования UTF-8 в набор символов-----------------*/
 void GMG12864_Decode_UTF8(uint8_t x, uint8_t y, uint8_t font, bool inversion, char *tx_buffer) {
-// Parameter --> x - x coordinate . From 0 to 127
-// Parameter --> y - the y coordinate. from 0 to 7
-// Parameter --> font - font. 0 - 3x5, 1 - 5x7
+/// Функция декодирования UTF-8 в набор символов и последующее занесение в буфер кадра
+/// \param x - координата по х. От 0 до 127
+/// \param y - координата по y. от 0 до 7
+/// \param font - шрифт. 0 - 3x5, 1 - 5x7
 	uint16_t symbol = 0;
 	bool flag_block = 0;
 	for (int i = 0; i < strlen(tx_buffer); i++) {
-		if (tx_buffer[i] < 0xC0) { 
+		if (tx_buffer[i] < 0xC0) { //Английский текст и символы. Если до русского текста, то [i] <0xD0. Но в font добавлен знак "°"
 			if (flag_block) {
 				flag_block = 0;
 			} else {
 				symbol = tx_buffer[i];
-				if (font == font3x5) { //If a 3x5 font is selected
+				if (font == font3x5) { //Если выбран шрифт размера 3x5
 					if (inversion) {
-						GMG12864_Print_symbol_3x5(x, y, symbol - 32, 1); 
+						GMG12864_Print_symbol_3x5(x, y, symbol - 32, 1); //Таблица UTF-8. Basic Latin. С "пробел" до "z". Инверсия вкл.
 					} else {
-						GMG12864_Print_symbol_3x5(x, y, symbol - 32, 0); 
+						GMG12864_Print_symbol_3x5(x, y, symbol - 32, 0); //Таблица UTF-8. Basic Latin. С "пробел" до "z". Инверсия выкл.
 					}
 					x = x + 4;
-				} else if (font == font5x7) { //If a font size of 5x7 is selected
+				} else if (font == font5x7) { //Если выбран шрифт размера 5x7
 					if (inversion) {
-						GMG12864_Print_symbol_5x7(x, y, symbol - 32, 1); 
+						GMG12864_Print_symbol_5x7(x, y, symbol - 32, 1); //Таблица UTF-8. Basic Latin. С "пробел" до "z". Инверсия вкл.
 					} else {
-						GMG12864_Print_symbol_5x7(x, y, symbol - 32, 0); 
+						GMG12864_Print_symbol_5x7(x, y, symbol - 32, 0); //Таблица UTF-8. Basic Latin. С "пробел" до "z". Инверсия выкл.
 					}
 					x = x + 6;
 				}
 			}
 		}
 
-		else { //Russian text
+		else { //Русский текст
 			symbol = tx_buffer[i] << 8 | tx_buffer[i + 1];
 			if (symbol < 0xD180 && symbol > 0xD081) {
-				if (font == font3x5) {//If a 3x5 font is selected
+				if (font == font3x5) { //Если выбран шрифт размера 3x5
 					if (inversion) {
-						GMG12864_Print_symbol_3x5(x, y, symbol - 53297, 1); 
+						GMG12864_Print_symbol_3x5(x, y, symbol - 53297, 1); //Таблица UTF-8. Кириллица. С буквы "А" до "п". Инверсия вкл.
 					} else {
-						GMG12864_Print_symbol_3x5(x, y, symbol - 53297, 0); 
+						GMG12864_Print_symbol_3x5(x, y, symbol - 53297, 0); //Таблица UTF-8. Кириллица. С буквы "А" до "п". Инверсия выкл.
 					}
 					x = x + 4;
-				} else if (font == font5x7) {//If a font size of 5x7 is selected
+				} else if (font == font5x7) { //Если выбран шрифт размера 5x7
 					if (inversion) {
-						GMG12864_Print_symbol_5x7(x, y, symbol - 53297, 1); 
+						GMG12864_Print_symbol_5x7(x, y, symbol - 53297, 1); //Таблица UTF-8. Кириллица. С буквы "А" до "п". Инверсия вкл.
 					} else {
-						GMG12864_Print_symbol_5x7(x, y, symbol - 53297, 0); 
+						GMG12864_Print_symbol_5x7(x, y, symbol - 53297, 0); //Таблица UTF-8. Кириллица. С буквы "А" до "п". Инверсия выкл.
 					}
 					x = x + 6;
 				}
 			} else if (symbol == 0xD081) {
-				if (font == font3x5) {//If a 3x5 font is selected
+				if (font == font3x5) { //Если выбран шрифт размера 3x5
 					if (inversion) {
-						GMG12864_Print_symbol_3x5(x, y, 159, 1); 
+						GMG12864_Print_symbol_3x5(x, y, 159, 1); ////Таблица UTF-8. Кириллица. Буква "Ё". Инверсия вкл.
 					} else {
-						GMG12864_Print_symbol_3x5(x, y, 159, 0); 
+						GMG12864_Print_symbol_3x5(x, y, 159, 0); ////Таблица UTF-8. Кириллица. Буква "Ё". Инверсия выкл.
 					}
 					x = x + 4;
-				} else if (font == font5x7) {//If a font size of 5x7 is selected
+				} else if (font == font5x7) { //Если выбран шрифт размера 5x7
 					if (inversion) {
-						GMG12864_Print_symbol_5x7(x, y, 159, 1); 
+						GMG12864_Print_symbol_5x7(x, y, 159, 1); ////Таблица UTF-8. Кириллица. Буква "Ё". Инверсия вкл.
 					} else {
-						GMG12864_Print_symbol_5x7(x, y, 159, 0); 
+						GMG12864_Print_symbol_5x7(x, y, 159, 0); ////Таблица UTF-8. Кириллица. Буква "Ё". Инверсия выкл.
 					}
 					x = x + 6;
 				}
 			} else if (symbol == 0xD191) {
-				if (font == font3x5) {//If a 3x5 font is selected
+				if (font == font3x5) { //Если выбран шрифт размера 3x5
 					if (inversion) {
-						GMG12864_Print_symbol_3x5(x, y, 160, 1); 
+						GMG12864_Print_symbol_3x5(x, y, 160, 1); ////Таблица UTF-8. Кириллица. Буква "ё". Инверсия вкл.
 					} else {
-						GMG12864_Print_symbol_3x5(x, y, 160, 0);
+						GMG12864_Print_symbol_3x5(x, y, 160, 0); ////Таблица UTF-8. Кириллица. Буква "ё". Инверсия выкл.
 					}
 					x = x + 4;
-				} else if (font == font5x7) {//If a font size of 5x7 is selected
+				} else if (font == font5x7) { //Если выбран шрифт размера 5x7
 					if (inversion) {
-						GMG12864_Print_symbol_5x7(x, y, 160, 1); 
+						GMG12864_Print_symbol_5x7(x, y, 160, 1); ////Таблица UTF-8. Кириллица. Буква "ё". Инверсия вкл.
 					} else {
-						GMG12864_Print_symbol_5x7(x, y, 160, 0); 
+						GMG12864_Print_symbol_5x7(x, y, 160, 0); ////Таблица UTF-8. Кириллица. Буква "ё". Инверсия выкл.
 					}
 					x = x + 6;
 				}
 			} else if (symbol == 0xC2B0) {
-				if (font == font3x5) {//If a 3x5 font is selected
+				if (font == font3x5) { //Если выбран шрифт размера 3x5
 					if (inversion) {
-						GMG12864_Print_symbol_3x5(x, y, 161, 1); 
+						GMG12864_Print_symbol_3x5(x, y, 161, 1); ////Таблица UTF-8. Basic Latin. Символ "°". Инверсия вкл.
 					} else {
-						GMG12864_Print_symbol_3x5(x, y, 161, 0); 
+						GMG12864_Print_symbol_3x5(x, y, 161, 0); ////Таблица UTF-8. Basic Latin. Символ "°". Инверсия выкл.
 					}
 					x = x + 4;
-				} else if (font == font5x7) {//If a font size of 5x7 is selected
+				} else if (font == font5x7) { //Если выбран шрифт размера 5x7
 					if (inversion) {
-						GMG12864_Print_symbol_5x7(x, y, 161, 1); 
+						GMG12864_Print_symbol_5x7(x, y, 161, 1); ////Таблица UTF-8. Basic Latin. Символ "°". Инверсия вкл.
 					} else {
-						GMG12864_Print_symbol_5x7(x, y, 161, 0); 
+						GMG12864_Print_symbol_5x7(x, y, 161, 0); ////Таблица UTF-8. Basic Latin. Символ "°". Инверсия выкл.
 					}
 					x = x + 6;
 				}
 			}
 
 			else {
-				if (font == font3x5) {//If a 3x5 font is selected
+				if (font == font3x5) { //Если выбран шрифт размера 3x5
 					if (inversion) {
-						GMG12864_Print_symbol_3x5(x, y, symbol - 53489, 1);
+						GMG12864_Print_symbol_3x5(x, y, symbol - 53489, 1); //Таблица UTF-8. Кириллица. С буквы "р", начинается сдвиг. Инверсия вкл.
 					} else {
-						GMG12864_Print_symbol_3x5(x, y, symbol - 53489, 0); 
+						GMG12864_Print_symbol_3x5(x, y, symbol - 53489, 0); //Таблица UTF-8. Кириллица. С буквы "р", начинается сдвиг. Инверсия выкл.
 					}
 					x = x + 4;
-				} else if (font == font5x7) {//If a font size of 5x7 is selected
+				} else if (font == font5x7) { //Если выбран шрифт размера 5x7
 					if (inversion) {
-						GMG12864_Print_symbol_5x7(x, y, symbol - 53489, 1);
+						GMG12864_Print_symbol_5x7(x, y, symbol - 53489, 1); //Таблица UTF-8. Кириллица. С буквы "р", начинается сдвиг. Инверсия вкл.
 					} else {
-						GMG12864_Print_symbol_5x7(x, y, symbol - 53489, 0); 
+						GMG12864_Print_symbol_5x7(x, y, symbol - 53489, 0); //Таблица UTF-8. Кириллица. С буквы "р", начинается сдвиг. Инверсия выкл.
 					}
 					x = x + 6;
 				}
@@ -696,11 +704,12 @@ void GMG12864_Decode_UTF8(uint8_t x, uint8_t y, uint8_t font, bool inversion, ch
 		}
 	}
 }
-/*-------------------- UTF-8 decoding function into a character set ------------------*/
+/*----------------Функция декодирования UTF-8 в набор символов-----------------*/
+
 /*-------------------- Inversion function of any place in the buffer -----------------*/
 void GMG12864_Inversion(uint16_t x_start, uint16_t x_end) {
-// Parameter --> x_start - the starting point for x is from 0 to 1024
-// Parameter --> x_end - y endpoint from 0 to 1024
+// Parameter --> x_start - начальная точка по х от 0 до 1024
+// Parameter --> x_end - конечная точка по y от 0 до 1024
 	for (; x_start < x_end; x_start++) {
 		Frame_buffer[x_start] = ~(Frame_buffer[x_start]);
 	}

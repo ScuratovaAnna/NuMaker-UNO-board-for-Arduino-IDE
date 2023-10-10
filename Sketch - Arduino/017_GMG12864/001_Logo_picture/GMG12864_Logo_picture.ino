@@ -1,7 +1,7 @@
  /**-------------------------------------------------------------------
  *\date  10.09.2023
  *
- * Ссылки на источник :
+ * Сылки на источник :
  * https://github.com/Solderingironspb/Lessons-Stm32/tree/Practice%2311
  * https://www.youtube.com/watch?v=ajEqZN5s5xc
  *
